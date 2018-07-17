@@ -20,7 +20,7 @@ namespace crap {
         private:
             binary_search_tree_node_t<Key, Value>* _head = nullptr;
             uint32_t _count = 0;
-            std::function<int(Key, Key)> _compare;
+            std::function<int32_t(Key, Key)> _compare;
 
             binary_search_tree_node_t<Key, Value>* copy(binary_search_tree_node_t<Key, Value>* node) const;
 
@@ -58,7 +58,7 @@ namespace crap {
             // USER-DEFINED
             // -----------
 
-            binary_search_tree_t(std::function<int(Key, Key)> compare = [](Key x, Key y) { return x - y; });
+            binary_search_tree_t(std::function<int32_t(Key, Key)> compare = [](Key x, Key y) { return x - y; });
 
             binary_search_tree_iterator_t<Key, Value> begin() const;
             binary_search_tree_iterator_t<Key, Value> end() const;
@@ -293,7 +293,7 @@ namespace crap {
     // -----------
 
     template<class Key, class Value>
-    binary_search_tree_t<Key, Value>::binary_search_tree_t(std::function<int(Key, Key)> compare) : _compare(compare) {}
+    binary_search_tree_t<Key, Value>::binary_search_tree_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
     template<class Key, class Value>
     binary_search_tree_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::begin() const {

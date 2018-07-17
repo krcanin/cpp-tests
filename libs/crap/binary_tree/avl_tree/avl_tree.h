@@ -11,7 +11,7 @@ namespace crap {
         public:
             avl_tree_node_t<Key, Value>* _head = nullptr;
             uint32_t _count = 0;
-            std::function<int(Key, Key)> _compare;
+            std::function<int32_t(Key, Key)> _compare;
 
             int32_t balance(avl_tree_node_t<Key, Value>* node) const;
 
@@ -44,7 +44,7 @@ namespace crap {
 			avl_tree_node_t<Key, Value>* rotate_left_right(avl_tree_node_t<Key, Value>* head);
 
 			avl_tree_node_t<Key, Value>* rotate_right_left(avl_tree_node_t<Key, Value>* head);
-            
+
             int32_t set_height(avl_tree_node_t<Key, Value>* node) const;
         public:
             const uint32_t& length = _count;
@@ -65,7 +65,7 @@ namespace crap {
             // USER-DEFINED
             // -----------
 
-            avl_tree_t(std::function<int(Key, Key)> compare = [](Key x, Key y) { return x - y; });
+            avl_tree_t(std::function<int32_t(Key, Key)> compare = [](Key x, Key y) { return x - y; });
 
             avl_tree_iterator_t<Key, Value> begin() const;
             avl_tree_iterator_t<Key, Value> end() const;
@@ -106,7 +106,7 @@ namespace crap {
             result->right = copy(node->right);
             return result;
         } else {
-            return node;
+            return nullptr;
         }
     }
 
@@ -404,7 +404,7 @@ namespace crap {
     // -----------
 
     template<class Key, class Value>
-    avl_tree_t<Key, Value>::avl_tree_t(std::function<int(Key, Key)> compare) : _compare(compare) {}
+    avl_tree_t<Key, Value>::avl_tree_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
     template<class Key, class Value>
     avl_tree_iterator_t<Key, Value> avl_tree_t<Key, Value>::begin() const {
