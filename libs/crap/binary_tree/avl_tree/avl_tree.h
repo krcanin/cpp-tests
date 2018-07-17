@@ -72,6 +72,7 @@ namespace crap {
             avl_tree_reverse_iterator_t<Key, Value> rbegin() const;
             avl_tree_reverse_iterator_t<Key, Value> rend() const;
 
+            void change_key(Key old_key, Key new_key);
             void clear();
             Value& get(Key key) const;
             void insert(Key key, Value value);
@@ -334,7 +335,7 @@ namespace crap {
 	template<class Key, class Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_right_left(avl_tree_node_t<Key, Value>* head) {
 		head->right = rotate_right(head->right);
-        
+
 		return rotate_left(head);
 	}
 
@@ -412,7 +413,7 @@ namespace crap {
 
     template<class Key, class Value>
     avl_tree_iterator_t<Key, Value> avl_tree_t<Key, Value>::end() const {
-    	return avl_tree_iterator_t<Key, Value>(nullptr, _count + 1);
+    	return avl_tree_iterator_t<Key, Value>(_head, _count);
     }
 
     template<class Key, class Value>
@@ -423,6 +424,13 @@ namespace crap {
     template<class Key, class Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_t<Key, Value>::rend() const {
         return avl_tree_reverse_iterator_t<Key, Value>(nullptr, _count);
+    }
+
+    template<class Key, class Value>
+    void avl_tree_t<Key, Value>::change_key(Key old_key, Key new_key) {
+        Value value = get(old_key);
+        remove(old_key);
+        insert(new_key, value);
     }
 
     template<class Key, class Value>

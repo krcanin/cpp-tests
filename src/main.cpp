@@ -18,10 +18,19 @@ int main(int argc, char** argv) {
 	at.insert(110, 0);
 
 	for(auto p : at) {
-		std::cout << p.first << " ";
+		auto& key = p.first;
+		auto& value = p.second;
+
+		std::cout << key << " ";
+		key = key + 1;
 	}
 
-	std::cout << "Hello";
+	std::cout << "\n";
+
+	for(auto p : at) {
+		auto& key = p.first;
+		std::cout << key << " ";
+	}
 
 	return 0;
 }
