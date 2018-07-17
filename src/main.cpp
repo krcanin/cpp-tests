@@ -17,14 +17,11 @@ int main(int argc, char** argv) {
 	at.insert(90, 0);
 	at.insert(110, 0);
 
-	auto it = at.begin();
-	auto it2 = at.end();
+	for(auto p : at) {
+		std::cout << p.first << " ";
+	}
 
-	it = it + 6;
-
-	std::cout << "\n";
-	std::cout << at.length << "\n";
-	std::cout << (*it).first;
+	std::cout << "Hello";
 
 	return 0;
 }
