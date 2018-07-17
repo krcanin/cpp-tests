@@ -334,6 +334,7 @@ namespace crap {
 	template<class Key, class Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_right_left(avl_tree_node_t<Key, Value>* head) {
 		head->right = rotate_right(head->right);
+        
 		return rotate_left(head);
 	}
 
