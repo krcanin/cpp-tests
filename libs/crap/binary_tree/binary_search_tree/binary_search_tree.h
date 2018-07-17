@@ -65,6 +65,7 @@ namespace crap {
             binary_search_tree_reverse_iterator_t<Key, Value> rbegin() const;
             binary_search_tree_reverse_iterator_t<Key, Value> rend() const;
 
+            void change_key(Key old_key, Key new_key);
             void clear();
             Value& get(Key key) const;
             void insert(Key key, Value value);
@@ -312,6 +313,13 @@ namespace crap {
     template<class Key, class Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::rend() const {
         return binary_search_tree_reverse_iterator_t<Key, Value>(nullptr, _count);
+    }
+
+    template<class Key, class Value>
+    void binary_search_tree_t<Key, Value>::change_key(Key old_key, Key new_key) {
+        Value value = get(old_key);
+        remove(old_key);
+        insert(new_key, value);
     }
 
     template<class Key, class Value>
