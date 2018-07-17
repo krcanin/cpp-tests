@@ -58,9 +58,6 @@ namespace crap {
 
     template<class Key, class Value>
     avl_tree_node_t<Key, Value>* avl_tree_iterator_t<Key, Value>::in_order(avl_tree_node_t<Key, Value>* node, int32_t* ptr) {
-        /*
-
-        */
         if(node) {
             avl_tree_node_t<Key, Value>* result;
 
