@@ -17,7 +17,7 @@ namespace crap {
             uint32_t _count = 0;
             std::function<int32_t(Key, Key)> _compare;
 
-            void build_max_heap(uint32_t l, uint32_t r);
+            void build_max_heap();
             void heapify(uint32_t i);
         public:
             uint32_t& length = _count;
@@ -50,15 +50,12 @@ namespace crap {
     // -----------
 
     template<class Key, class Value>
-    void binary_heap_t<Key, Value>::build_heap(uint32_t l, uint32_t r) {
-        if (l == r) return;
-
-        uint32_t n = r - l + 1;
-        uint32_t i = l + (n / 2) - 1;
+    void binary_heap_t<Key, Value>::build_heap() {
+        uint32_t i = (_count / 2) - 1;
 
         bool flag = true;
 
-        while (i >= l && flag) {
+        while (i >= 0 && flag) {
             heapify(i);
 
             if (i == 0) {
@@ -126,18 +123,49 @@ namespace crap {
 
     template<class Key, class Value>
     binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(const binary_heap_t<Key, Value>& rhs) {
-
+        _data = list_t<binary_heap_node_t<Key, Value>*>(rhs._data);
+        _count = rhs._count;
+        _compare = rhs._compare;
     }
 
     template<class Key, class Value>
     binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(binary_heap_t<Key, Value>&& rhs) {
+        _data = list_t<binary_heap_node_t<Key, Value>*>(std::move(rhs._data));
 
+        _count = rhs._count;
+        rhs._count = 0;
+
+        _compare = rhs._compare;
+        rhs._compare = nullptr;
     }
 
     // -----------
     // USER-DEFINED
     // -----------
 
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>::binary_heap_t(std::function<Key, Value> compare) : _compare(compare) {}
+
+    template<class Key, class Value>
+    std::pair<Key, Value> binary_heap_t<Key, Value>::extract() {
+        std::pair<Key, Value> result = peek();
+        _data.pop(0);
+        _count -= 1;
+        build_max_heap(0, _count);
+    }
+
+    template<class Key, class Value>
+    void binary_heap_t<Key, Value>::insert(Key key, Value value) {
+        _data.append(new binary_heap_t<Key, Value>(key, value));
+        uint32_t i = _count;
+		build_max_heap(0, _count);
+		_count += 1;
+    }
+
+    template<class Key, class Value>
+    std::pair<Key, Value> binary_heap_t<Key, Value>::peek() const {
+        return std::make_pair(_data[0]->key, _data[0]->value);
+    }
 }
 
 #endif

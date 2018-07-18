@@ -33,7 +33,7 @@ namespace crap {
             template<class U> void insertion_sort(uint32_t left, uint32_t right, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
 
             template<class U> void merge(uint32_t left, uint32_t middle, uint32_t right, std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
-        
+
             void resize(uint32_t n);
         public:
             const uint32_t& length = _count;
@@ -63,15 +63,15 @@ namespace crap {
             template<class... Args> void append(Value item, Args... rest);
 
             list_iterator_t<Value> begin() const;
-            
+
             void clear();
 
             list_t<Value>* copy() const;
 
             uint32_t count(Value item) const;
-            
+
             list_iterator_t<Value> end() const;
-            
+
             template<class Iter> void extend(Iter it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
@@ -96,7 +96,7 @@ namespace crap {
             void remove(Value item);
 
             list_reverse_iterator_t<Value> rend() const;
-            
+
             void reverse();
 
             // stable & in-place ~> Timsort
@@ -125,7 +125,7 @@ namespace crap {
     template<class Value>
     void list_t<Value>::append(Value* item) {
         _elements[_count++] = item;
-        
+
         if(_count == _size) {
             resize(_size * 2);
         }
@@ -142,7 +142,7 @@ namespace crap {
             while (j > left) {
                 int cmp_r = cmp(key(*_elements[j]), key(*_elements[j - 1]));
                 cmp_r = reverse ? -cmp_r : cmp_r;
-                
+
                 if(cmp_r < 0) {
                     std::swap(_elements[j], _elements[j - 1]);
                     j -= 1;
@@ -177,7 +177,7 @@ namespace crap {
         while (i < n1 && j < n2) {
             int cmp_r = cmp(key(*left_part[i]), key(*right_part[j]));
             cmp_r = reverse ? -cmp_r : cmp_r;
-            
+
             if (cmp_r < 0) {
                 _elements[k++] = left_part[i++];
             } else {
@@ -222,14 +222,14 @@ namespace crap {
             throw "Invalid resize value";
         }
     }
-    
+
     // -----------
     // MANDATORY
     // -----------
 
     template<class Value>
     list_t<Value>::list_t() : list_t(128) {}
-    
+
     template<class Value>
     list_t<Value>::list_t(const list_t<Value>& rhs) : list_t(rhs._initial_size) {
         for(Value item : rhs) {
@@ -261,7 +261,7 @@ namespace crap {
     template<class Value>
     list_t<Value>& list_t<Value>::operator=(const list_t<Value>& rhs) {
         clear();
-        
+
         for(Value item : rhs) {
             append(item);
         }
@@ -269,6 +269,8 @@ namespace crap {
 
     template<class Value>
     list_t<Value>& list_t<Value>::operator=(list_t<Value>&& rhs) {
+        clear();
+
         _elements = rhs._elements;
         _size = rhs._size;
         _count = rhs._count;
@@ -304,7 +306,7 @@ namespace crap {
             append(item);
         }
     }
-    
+
     template<class Value>
     void list_t<Value>::append(Value item) {
         append(new Value(item));
@@ -321,7 +323,7 @@ namespace crap {
     list_iterator_t<Value> list_t<Value>::begin() const {
         return list_iterator_t<Value>(_elements, 0, _count);
     }
-    
+
     template<class Value>
     void list_t<Value>::clear() {
         this->~list_t();
@@ -378,7 +380,7 @@ namespace crap {
     void list_t<Value>::extend(Value* arr, uint32_t n) {
         extend(arr, 0, n);
     }
-    
+
     template<class Value>
     uint32_t list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         if (start >= _count) {
@@ -439,7 +441,7 @@ namespace crap {
             while(it != end()) {
                 int cmp_r = cmp(key(*it), key(current));
                 cmp_r = reverse ? -cmp_r : cmp_r;
-                
+
                 if (cmp_r < 0) {
                     return false;
                 }
@@ -493,7 +495,7 @@ namespace crap {
     list_reverse_iterator_t<Value> list_t<Value>::rbegin() const {
         return list_reverse_iterator_t<Value>(_elements, _count - 1, _count);
     }
-    
+
     template<class Value>
     void list_t<Value>::remove(Value item) {
         pop(index(item));
@@ -503,7 +505,7 @@ namespace crap {
     list_reverse_iterator_t<Value> list_t<Value>::rend() const {
         return list_reverse_iterator_t<Value>(nullptr, 0, _count);
     }
-    
+
     template<class Value>
     void list_t<Value>::reverse() {
         for (uint32_t i = 0, end = _count / 2; i < end; i += 1) {
@@ -535,15 +537,15 @@ namespace crap {
 
         /*
          * example:
-         * 
+         *
          * merge(0, 32, 64)     \
          * merge(64, 96, 128)    |- size = 32
          * merge(128, 160, 196)  |- i = [0, 64, 128, 196]
          * merge(196, 224, 256) /
-         * 
+         *
          * merge(0, 64, 128)     \- size = 64
          * merge(128, 196, 256)  /- i = [0, 128]
-         * 
+         *
          * merge(0, 128, 256)     - size = 128, i = [0]
          */
     }
@@ -603,11 +605,11 @@ namespace crap {
     template<class Value>
     list_t<Value>* list_t<Value>::operator+(const list_t<Value>& rhs) const {
         list_t<Value>* result = new list_t<Value>(*this);
-        
+
         for(Value item : rhs) {
             result->append(item);
         }
-        
+
         return result;
     }
 
