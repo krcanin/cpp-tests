@@ -5,6 +5,11 @@
 #include "../../list/list.h"
 
 namespace crap {
+    // -----------
+    // NOTES
+    // -----------
+    // - standard comparison function results in min-heap
+
     template<class Key, class Value>
     class binary_heap_t {
         private:
@@ -24,6 +29,8 @@ namespace crap {
             binary_heap_t(const binary_heap_t<Key, Value>& rhs);
             binary_heap_t(binary_heap_t<Key, Value>&& rhs);
 
+            ~binary_heap_t();
+
             binary_heap_t<Key, Value>& operator=(const binary_heap_t<Key, Value>& rhs);
             binary_heap_t<Key, Value>& operator=(binary_heap_t<Key, Value>&& rhs);
 
@@ -31,7 +38,7 @@ namespace crap {
             // USER-DEFINED
             // -----------
 
-            binary_heap_t(std::function<Key, Value> compare);
+            binary_heap_t(std::function<Key, Value> compare = [](Key x, Key y) { return x - y; });
 
             std::pair<Key, Value> extract();
             void insert(Key key, Value value);
@@ -41,6 +48,26 @@ namespace crap {
     // -----------
     // PRIVATE
     // -----------
+
+    template<class Key, class Value>
+    void binary_heap_t<Key, Value>::build_heap(uint32_t l, uint32_t r) {
+        if (l == r) return;
+
+        uint32_t n = r - l + 1;
+        uint32_t i = l + (n / 2) - 1;
+
+        bool flag = true;
+
+        while (i >= l && flag) {
+            heapify(i);
+
+            if (i == 0) {
+                flag = false;
+            } else {
+                i -= 1;
+            }
+        }
+    }
 
     template<class Key, class Value>
     void binary_heap_t<Key, Value>::heapify(uint32_t i) {
@@ -71,29 +98,41 @@ namespace crap {
     	}
     }
 
-    template<class Key, class Value>
-    void binary_heap_t<Key, Value>::build_max_heap(uint32_t l, uint32_t r) {
-    	if (l == r) return;
-
-    	uint32_t n = r - l + 1;
-    	uint32_t i = l + (n / 2) - 1;
-
-    	bool flag = true;
-
-    	while (i >= l && flag) {
-    		heapify(i);
-
-    		if (i == 0) {
-    			flag = false;
-    		} else {
-    			i -= 1;
-    		}
-    	}
-    }
-
     // -----------
     // MANDATORY
     // -----------
+
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>::binary_heap_t(const binary_heap_t<Key, Value>& rhs) : _data(rhs._data) {
+        _count = rhs._count;
+        _compare = rhs._compare;
+    }
+
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>::binary_heap_t(binary_heap_t<Key, Value>&& rhs) : _data(std::move(rhs._data)) {
+        _count = rhs._count;
+        rhs._count = 0;
+
+        _compare = rhs._compare;
+        rhs._compare = nullptr;
+    }
+
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>::~binary_heap_t() {
+        for(uint32_t i = 0; i < _data.length; i += 1) {
+            delete _data[i];
+        }
+    }
+
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(const binary_heap_t<Key, Value>& rhs) {
+
+    }
+
+    template<class Key, class Value>
+    binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(binary_heap_t<Key, Value>&& rhs) {
+
+    }
 
     // -----------
     // USER-DEFINED
