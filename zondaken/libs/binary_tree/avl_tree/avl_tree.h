@@ -37,13 +37,13 @@ namespace crap {
 
             avl_tree_node_t<Key, Value>* remove_min(avl_tree_node_t<Key, Value>* node);
 
-			avl_tree_node_t<Key, Value>* rotate_left(avl_tree_node_t<Key, Value>* head);
+            avl_tree_node_t<Key, Value>* rotate_left(avl_tree_node_t<Key, Value>* head);
 
-			avl_tree_node_t<Key, Value>* rotate_right(avl_tree_node_t<Key, Value>* head);
+            avl_tree_node_t<Key, Value>* rotate_right(avl_tree_node_t<Key, Value>* head);
 
-			avl_tree_node_t<Key, Value>* rotate_left_right(avl_tree_node_t<Key, Value>* head);
+            avl_tree_node_t<Key, Value>* rotate_left_right(avl_tree_node_t<Key, Value>* head);
 
-			avl_tree_node_t<Key, Value>* rotate_right_left(avl_tree_node_t<Key, Value>* head);
+            avl_tree_node_t<Key, Value>* rotate_right_left(avl_tree_node_t<Key, Value>* head);
 
             int32_t set_height(avl_tree_node_t<Key, Value>* node) const;
         public:
