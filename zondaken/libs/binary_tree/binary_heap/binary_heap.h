@@ -162,7 +162,7 @@ namespace crap {
         _data.append(new binary_heap_node_t<Key, Value>(key, value));
 		_count += 1;
 
-        auto& A = _data;
+        list_t<binary_heap_node_t<Key, Value>*>& A = _data;
         uint32_t i = parent(heap_size() - 1);
 
         while(i >= 0 && A[i] > A[parent(i)]) {
