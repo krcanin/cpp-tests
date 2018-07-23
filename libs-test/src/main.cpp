@@ -1,12 +1,13 @@
+#ifndef MAIN_CPP
+#define MAIN_CPP
+
 #include <iostream>
 #include <string>
 
 #include "../libs/math_parser/reader.h"
 #include "../libs/math_parser/lexer.h"
 
-using namespace crap::math_parser;
-
-int main() {
+int main(int argc, char** argv) {
     char* s = const_cast<char*>("42-(30+69)");
     reader_t r(s);
     lexer_t l(r);
@@ -20,5 +21,7 @@ int main() {
         }
     }
 
-    return 0;
+	return 0;
 }
+
+#endif
