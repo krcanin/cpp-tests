@@ -14,7 +14,7 @@ namespace crap {
     class binary_heap_t {
         public:
             list_t<binary_heap_node_t<Key, Value>*> _data;
-            uint32_t _count = 0;
+            const uint32_t& _count = _data.length;
             std::function<int32_t(Key, Key)> _compare;
 
             uint32_t heap_size();
@@ -25,7 +25,7 @@ namespace crap {
             void build_heap();
             void heapify(uint32_t i);
         public:
-            uint32_t& length = _count;
+            const uint32_t& length = _count;
 
             // -----------
             // MANDATORY
@@ -45,6 +45,7 @@ namespace crap {
 
             binary_heap_t(std::function<int32_t(Key, Key)> compare = [](Key x, Key y) { return x - y; });
 
+            bool empty() const;
             std::pair<Key, Value> extract();
             void insert(Key key, Value value);
             std::pair<Key, Value> peek() const;
@@ -75,25 +76,31 @@ namespace crap {
     }
 
     template<class Key, class Value>
-    void binary_heap_t<Key, Value>::build_heap() {
-        for(uint32_t i = (_count / 2) - 1; i >= 0; i -= 1) {
-            heapify(i);
-        }
-    }
-
-    template<class Key, class Value>
     void binary_heap_t<Key, Value>::heapify(uint32_t i) {
         // https://www.youtube.com/watch?v=B7hVxCmfPtM
 
-        if(i < (heap_size() / 2)) {
+        if(heap_size() > 1 && i <= ((heap_size() / 2) - 1)) {
             auto& A = _data;
 
-            if(A[i] < A[left(i)]) {
-                std::swap(A[i], A[left(i)]);
-                heapify(left(i));
-            } else if(A[i] < A[right(i)]) {
-                std::swap(A[i], A[right(i)]);
-                heapify(right(i));
+            uint32_t l = left(i);
+            uint32_t r = right(i);
+
+            uint32_t max = i;
+
+            bool b1 = l < heap_size();
+            bool b2 = r < heap_size();
+
+            if(b1 && b2) {
+                max = _compare(A[l]->key, A[r]->key) > 0 ? l : r;
+            } else if(b1) {
+                max = l;
+            } else if(b2) {
+                max = r;
+            }
+
+            if(max != i && _compare(A[i]->key, A[max]->key) < 0) {
+                std::swap(A[i], A[max]);
+                heapify(max);
             }
         }
     }
@@ -150,29 +157,41 @@ namespace crap {
     binary_heap_t<Key, Value>::binary_heap_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
     template<class Key, class Value>
+    bool binary_heap_t<Key, Value>::empty() const {
+        return _count == 0;
+    }
+
+    template<class Key, class Value>
     std::pair<Key, Value> binary_heap_t<Key, Value>::extract() {
         std::pair<Key, Value> result = peek();
-        _data.pop(0);
-        _count -= 1;
-        build_heap();
+
+        std::swap(_data[0], _data[_count - 1]);
+        _data.pop(_count - 1);
+
+        heapify(0);
+
+        return result;
     }
 
     template<class Key, class Value>
     void binary_heap_t<Key, Value>::insert(Key key, Value value) {
         _data.append(new binary_heap_node_t<Key, Value>(key, value));
-		_count += 1;
 
-        list_t<binary_heap_node_t<Key, Value>*>& A = _data;
-        uint32_t i = parent(heap_size() - 1);
+        uint32_t i = _count - 1;
+        uint32_t p;
 
-        while(i >= 0 && A[i] > A[parent(i)]) {
-            std::swap(A[i], A[parent(i)]);
-            i = parent(i);
+        while(i > 0 && _compare(_data[i]->key, _data[p = parent(i)]->key) > 0) {
+            std::swap(_data[i], _data[p]);
+            i = p;
         }
     }
 
     template<class Key, class Value>
     std::pair<Key, Value> binary_heap_t<Key, Value>::peek() const {
+        if(_count == 0) {
+            throw "Heap is empty";
+        }
+
         return std::make_pair(_data[0]->key, _data[0]->value);
     }
 }
