@@ -1,7 +1,7 @@
 #ifndef SINGLY_LINKED_LIST_NODE_H
 #define SINGLY_LINKED_LIST_NODE_H
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class singly_linked_list_node_t {
         public:

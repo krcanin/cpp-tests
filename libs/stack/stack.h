@@ -5,7 +5,7 @@
 
 #include "singly_linked_list.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class stack_t {
         private:

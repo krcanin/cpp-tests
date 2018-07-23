@@ -1,7 +1,7 @@
 #ifndef DOUBLY_LINKED_LIST_REVERSE_ITERATOR_H
 #define DOUBLY_LINKED_LIST_REVERSE_ITERATOR_H
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class doubly_linked_list_reverse_iterator_t {
         private:

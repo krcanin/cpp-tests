@@ -8,7 +8,7 @@
 #include "singly_linked_list_node.h"
 #include "singly_linked_list_iterator.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class singly_linked_list_t {
         private:

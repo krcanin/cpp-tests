@@ -4,7 +4,7 @@
 #include <limits>
 #include <string>
 
-namespace crap {
+namespace mylib {
     namespace math_parser {
         enum token_type_t { NUM, PLUS, MINUS, LPAREN, RPAREN };
 

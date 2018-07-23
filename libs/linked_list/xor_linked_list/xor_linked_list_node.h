@@ -1,7 +1,7 @@
 #ifndef XOR_LINKED_LIST_NODE_H
 #define XOR_LINKED_LIST_NODE_H
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class xor_linked_list_node_t {
         public:

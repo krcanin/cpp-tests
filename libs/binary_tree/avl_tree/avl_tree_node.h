@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class avl_tree_node_t {
         public:

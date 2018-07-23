@@ -5,7 +5,7 @@
 #include "avl_tree_iterator.h"
 #include "avl_tree_reverse_iterator.h"
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class avl_tree_t {
         public:

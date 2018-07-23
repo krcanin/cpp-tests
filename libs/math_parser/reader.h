@@ -3,7 +3,7 @@
 
 #include <cstring>
 
-namespace crap {
+namespace mylib {
     namespace math_parser {
         class reader_t {
             private:

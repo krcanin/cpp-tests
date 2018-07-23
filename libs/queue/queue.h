@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class queue_t {
         private:

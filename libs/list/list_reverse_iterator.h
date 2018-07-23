@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class list_reverse_iterator_t {
         protected:

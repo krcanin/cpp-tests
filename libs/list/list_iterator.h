@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class list_iterator_t {
         private:

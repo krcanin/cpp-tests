@@ -10,7 +10,7 @@
 #include "list_iterator.h"
 #include "list_reverse_iterator.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class list_t {
         // -----------

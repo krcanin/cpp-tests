@@ -7,7 +7,7 @@
 #include "binary_search_tree_node.h"
 #include "../../list/list.h"
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class binary_search_tree_reverse_iterator_t {
         private:

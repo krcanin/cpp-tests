@@ -1,7 +1,7 @@
 #ifndef DOUBLY_LINKED_LIST_NODE_H
 #define DOUBLY_LINKED_LIST_NODE_H
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class doubly_linked_list_node_t {
         public:

@@ -3,7 +3,7 @@
 
 #include "doubly_linked_list_node.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class doubly_linked_list_iterator_t {
         private:

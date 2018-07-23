@@ -6,7 +6,7 @@
 #include "reader.h"
 #include "token.h"
 
-namespace crap {
+namespace mylib {
     namespace math_parser {
         class lexer_t {
             private:

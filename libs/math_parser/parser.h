@@ -3,7 +3,7 @@
 
 #include "lexer.h"
 
-namespace crap {
+namespace mylib {
     namespace math_parser {
         class parser_t {
             private:

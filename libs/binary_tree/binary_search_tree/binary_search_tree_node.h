@@ -1,7 +1,7 @@
 #ifndef BINARY_SEARCH_TREE_NODE_H
 #define BINARY_SEARCH_TREE_NODE_H
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class binary_search_tree_node_t {
         public:

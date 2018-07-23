@@ -3,7 +3,7 @@
 
 #include "xor_linked_list_node.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class xor_linked_list_iterator_t {
             xor_linked_list_node_t<Value> *_current, *_prev;

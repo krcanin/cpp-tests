@@ -6,7 +6,7 @@
 
 #include "avl_tree_node.h"
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class avl_tree_iterator_t {
         private:

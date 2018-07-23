@@ -9,7 +9,7 @@
 #include "xor_linked_list_iterator.h"
 #include "xor_linked_list_reverse_iterator.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class xor_linked_list_t {
         private:

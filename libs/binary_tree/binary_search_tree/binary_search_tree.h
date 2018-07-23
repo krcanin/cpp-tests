@@ -8,7 +8,7 @@
 #include "binary_search_tree_iterator.h"
 #include "binary_search_tree_reverse_iterator.h"
 
-namespace crap {
+namespace mylib {
 	// -----------
 	// NOTES
 	// -----------

@@ -9,7 +9,7 @@
 #include "doubly_linked_list_iterator.h"
 #include "doubly_linked_list_reverse_iterator.h"
 
-namespace crap {
+namespace mylib {
     template<class Value>
     class doubly_linked_list_t {
         private:

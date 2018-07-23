@@ -4,7 +4,7 @@
 #include "binary_heap_node.h"
 #include "../../list/list.h"
 
-namespace crap {
+namespace mylib {
     // -----------
     // NOTES
     // -----------

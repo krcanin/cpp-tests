@@ -1,7 +1,7 @@
 #ifndef BINARY_HEAP_NODE_H
 #define BINARY_HEAP_NODE_H
 
-namespace crap {
+namespace mylib {
     template<class Key, class Value>
     class binary_heap_node_t {
         public:
