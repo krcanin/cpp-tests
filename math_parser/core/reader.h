@@ -16,8 +16,7 @@ namespace mylib {
                 reader_t(char* s, uint32_t index = 0);
 
                 bool eof() const;
-                char peek() const;
-                char pop();
+                char next();
         };
 
         reader_t::reader_t(char* s, uint32_t index) : s(s), _index(index) {
@@ -28,14 +27,8 @@ namespace mylib {
             return _index >= n;
         }
 
-        char reader_t::peek() const {
-            return s[_index];
-        }
-
-        char reader_t::pop() {
-            char result = peek();
-            _index += 1;
-            return result;
+        char reader_t::next() const {
+            return s[_index++];
         }
     }
 }

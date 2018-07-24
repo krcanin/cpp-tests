@@ -11,11 +11,14 @@ namespace mylib {
         class lexer_t {
             private:
                 reader_t& r;
+
+                void read_while(std::function<bool(char)> predicate);
+                token_t read_number();
             public:
                 lexer_t(reader_t& r);
 
                 bool eof() const;
-                token_t pop();
+                token_t next();
         };
 
         lexer_t::lexer_t(reader_t& r) : r(r) {}
@@ -24,8 +27,12 @@ namespace mylib {
             return r.eof();
         }
 
-        token_t lexer_t::pop() {
-            char c;
+        token_t lexer_t::next() {
+            token_t t;
+
+            return t;
+
+            /*char c;
             c = r.pop();
 
             token_t t;
@@ -71,7 +78,7 @@ namespace mylib {
                 throw s;
             }
 
-            return t;
+            return t;*/
         }
     }
 }
