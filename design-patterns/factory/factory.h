@@ -3,9 +3,11 @@
 
 #include "base.h"
 
+enum factory_product_e { FOO, BAR };
+
 class factory_t {
     public:
-        static base create(char c);
+        static base create(factory_product_e c);
 };
 
 #endif

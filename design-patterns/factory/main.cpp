@@ -7,8 +7,8 @@ void say_hello(base& rhs) {
 }
 
 int main() {
-    base f = factory_t::create('f');
-    base b = factory_t::create('b');
+    base f = factory_t::create(factory_product_e::FOO);
+    base b = factory_t::create(factory_product_e::BAR);
 
     say_hello(f);
     say_hello(b);
