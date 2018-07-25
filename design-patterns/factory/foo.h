@@ -1,7 +1,7 @@
 #ifndef FOO_H
 #define FOO_H
 
-#include "../base.h"
+#include "base.h"
 
 class foo : public base {
     public:

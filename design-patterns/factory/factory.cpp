@@ -1,7 +1,7 @@
 #include "factory.h"
 
-#include "derived/foo.h"
-#include "derived/bar.h"
+#include "foo.h"
+#include "bar.h"
 
 base factory_t::create(char c) {
     if(c == 'f') {

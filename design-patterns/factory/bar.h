@@ -1,7 +1,7 @@
 #ifndef BAR_H
 #define BAR_H
 
-#include "../base.h"
+#include "base.h"
 
 class bar : public base {
     public:
