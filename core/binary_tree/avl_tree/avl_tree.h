@@ -6,7 +6,7 @@
 #include "avl_tree_reverse_iterator.h"
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class avl_tree_t {
         public:
             avl_tree_node_t<Key, Value>* _head = nullptr;
@@ -89,7 +89,7 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	int32_t avl_tree_t<Key, Value>::balance(avl_tree_node_t<Key, Value>* head) const {
 		if (head) {
 			return get_height(head->right) - get_height(head->left);
@@ -98,7 +98,7 @@ namespace mylib {
 		}
 	}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::copy(avl_tree_node_t<Key, Value>* node) const {
         if(node) {
             avl_tree_node_t<Key, Value>* result = new avl_tree_node_t<Key, Value>(node->key, node->value);
@@ -110,7 +110,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::dispose(avl_tree_node_t<Key, Value>* node) {
         if(node) {
             dispose(node->left);
@@ -121,7 +121,7 @@ namespace mylib {
         return nullptr;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::get(avl_tree_node_t<Key, Value>* node, Key key) const {
         if (node) {
             int cmp_r = _compare(key, node->key);
@@ -138,7 +138,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
 	int32_t avl_tree_t<Key, Value>::get_height(avl_tree_node_t<Key, Value>* node) const {
 		if (node) {
 			return node->height;
@@ -147,7 +147,7 @@ namespace mylib {
 		}
 	}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::insert(avl_tree_node_t<Key, Value>* node, Key key, Value value) {
         if (node) {
             int cmp_r = _compare(key, node->key);
@@ -168,7 +168,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::max(avl_tree_node_t<Key, Value>* node) const {
         if(node) {
             if(node->right) {
@@ -181,7 +181,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::min(avl_tree_node_t<Key, Value>* node) const {
         if(node) {
             if(node->left) {
@@ -194,7 +194,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::remove(avl_tree_node_t<Key, Value>* node, Key key) {
         if (node) {
             int x = _compare(key, node->key);
@@ -238,7 +238,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::remove_max(avl_tree_node_t<Key, Value>* node) {
         if(node) {
             if(node->right) {
@@ -253,7 +253,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::remove_min(avl_tree_node_t<Key, Value>* node) {
         if(node) {
             if(node->left) {
@@ -268,7 +268,7 @@ namespace mylib {
         }
     }
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rebalance(avl_tree_node_t<Key, Value>* node) {
 		if (node) {
 			switch (balance(node)) {
@@ -302,7 +302,7 @@ namespace mylib {
 		}
 	}
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_left(avl_tree_node_t<Key, Value>* node) {
 		avl_tree_node_t<Key, Value>* result = node->right;
 		node->right = result->left;
@@ -314,7 +314,7 @@ namespace mylib {
 		return result;
 	}
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_right(avl_tree_node_t<Key, Value>* head) {
 		avl_tree_node_t<Key, Value>* result = head->left;
 		head->left = result->right;
@@ -326,20 +326,20 @@ namespace mylib {
 		return result;
 	}
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_left_right(avl_tree_node_t<Key, Value>* head) {
 		head->left = rotate_left(head->left);
 		return rotate_right(head);
 	}
 
-	template<class Key, class Value>
+	template<typename Key, typename Value>
 	avl_tree_node_t<Key, Value>* avl_tree_t<Key, Value>::rotate_right_left(avl_tree_node_t<Key, Value>* head) {
 		head->right = rotate_right(head->right);
 
 		return rotate_left(head);
 	}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
 	int32_t avl_tree_t<Key, Value>::set_height(avl_tree_node_t<Key, Value>* node) const {
 		if (node) {
 			return 1 + std::max(set_height(node->left), set_height(node->right));
@@ -352,14 +352,14 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>::avl_tree_t(const avl_tree_t<Key, Value>& rhs) {
         _head = copy(rhs._head);
         _count = rhs._count;
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>::avl_tree_t(avl_tree_t<Key, Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
@@ -371,12 +371,12 @@ namespace mylib {
         rhs._compare = nullptr;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>::~avl_tree_t() {
         clear();
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>& avl_tree_t<Key, Value>::operator=(const avl_tree_t<Key, Value>& rhs) {
         clear();
 
@@ -385,7 +385,7 @@ namespace mylib {
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>& avl_tree_t<Key, Value>::operator=(avl_tree_t<Key, Value>&& rhs) {
         clear();
 
@@ -403,43 +403,43 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_t<Key, Value>::avl_tree_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_iterator_t<Key, Value> avl_tree_t<Key, Value>::begin() const {
         return avl_tree_iterator_t<Key, Value>(_head, 0);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_iterator_t<Key, Value> avl_tree_t<Key, Value>::end() const {
     	return avl_tree_iterator_t<Key, Value>(_head, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_t<Key, Value>::rbegin() const {
         return avl_tree_reverse_iterator_t<Key, Value>(_head, 0);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_t<Key, Value>::rend() const {
         return avl_tree_reverse_iterator_t<Key, Value>(nullptr, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::change_key(Key old_key, Key new_key) {
         Value value = get(old_key);
         remove(old_key);
         insert(new_key, value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::clear() {
         _head = dispose(_head);
         _count = 0;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     Value& avl_tree_t<Key, Value>::get(Key key) const {
         avl_tree_node_t<Key, Value>* node = get(_head, key);
 
@@ -450,13 +450,13 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::insert(Key key, Value value) {
         _head = insert(_head, key, value);
         _count += 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> avl_tree_t<Key, Value>::max() const {
         if(_count == 0) {
             throw "Empty BST";
@@ -466,7 +466,7 @@ namespace mylib {
         return std::make_pair(node->key, node->value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> avl_tree_t<Key, Value>::min() const {
         if(_count == 0) {
             throw "Empty BST";
@@ -476,7 +476,7 @@ namespace mylib {
         return std::make_pair(node->key, node->value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove(Key key) {
         if(_count == 0) {
             throw "Empty BST";
@@ -486,7 +486,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove_max() {
         if(_count == 0) {
             throw "Empty BST";
@@ -496,7 +496,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove_min() {
         if(_count == 0) {
             throw "Empty BST";
@@ -506,7 +506,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool avl_tree_t<Key, Value>::search(Key key) const {
         avl_tree_node_t<Key, Value>* node = get(_head, key);
 
@@ -517,7 +517,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::update(Key key, Value value) {
         avl_tree_node_t<Key, Value>* node = get(_head, key);
 

@@ -8,7 +8,7 @@
 #include "../../list/list.h"
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class binary_search_tree_reverse_iterator_t {
         private:
             std::pair<Key, Value>** _arr = nullptr;
@@ -58,7 +58,7 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_reverse_iterator_t<Key, Value>::in_order(binary_search_tree_node_t<Key, Value>* node) {
         if(node) {
             in_order(node->right);
@@ -71,7 +71,7 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>::binary_search_tree_reverse_iterator_t(const binary_search_tree_reverse_iterator_t<Key, Value>& rhs) {
     	_index = rhs._index;
 		_n = rhs._n;
@@ -85,7 +85,7 @@ namespace mylib {
 		}
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>::binary_search_tree_reverse_iterator_t(binary_search_tree_reverse_iterator_t<Key, Value>&& rhs) {
     	_arr = rhs._arr;
 		rhs._arr = nullptr;
@@ -97,7 +97,7 @@ namespace mylib {
 		rhs._n = 0;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>::~binary_search_tree_reverse_iterator_t() {
     	if(_arr) {
 			for(uint32_t i = 0; i < _n; i += 1) {
@@ -108,7 +108,7 @@ namespace mylib {
     	}
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator=(const binary_search_tree_reverse_iterator_t<Key, Value>& rhs) {
     	this->~binary_search_tree_reverse_iterator_t();
 
@@ -124,7 +124,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator=(binary_search_tree_reverse_iterator_t<Key, Value>&& rhs) {
     	this->~binary_search_tree_reverse_iterator_t();
 
@@ -144,7 +144,7 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>::binary_search_tree_reverse_iterator_t(binary_search_tree_node_t<Key, Value>* node, uint32_t n) {
     	if(node) {
 			_arr = new std::pair<Key, Value>*[n];
@@ -158,7 +158,7 @@ namespace mylib {
     	}
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_reverse_iterator_t<Key, Value>::operator++(int) {
         binary_search_tree_reverse_iterator_t<Key, Value> copy(*this);
 
@@ -167,28 +167,28 @@ namespace mylib {
         return copy;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator++() {
         operator+=(1);
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool binary_search_tree_reverse_iterator_t<Key, Value>::operator==(binary_search_tree_reverse_iterator_t<Key, Value> rhs) {
         return _index == rhs._n;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool binary_search_tree_reverse_iterator_t<Key, Value>::operator!=(binary_search_tree_reverse_iterator_t<Key, Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator*() {
         return *(_arr[_index]);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_reverse_iterator_t<Key, Value>::operator--(int) {
         binary_search_tree_reverse_iterator_t<Key, Value> copy(*this);
 
@@ -197,41 +197,41 @@ namespace mylib {
         return copy;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator--() {
         operator-=(1);
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_reverse_iterator_t<Key, Value>::operator+(uint32_t n) {
         binary_search_tree_reverse_iterator_t<Key, Value> result(*this);
         result._index += n;
         return result;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_reverse_iterator_t<Key, Value>::operator-(uint32_t n) {
     	binary_search_tree_reverse_iterator_t<Key, Value> result(*this);
 		result._index -= n;
 		return result;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator+=(uint32_t n) {
         return operator=(operator+(n));
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value>& binary_search_tree_reverse_iterator_t<Key, Value>::operator-=(uint32_t n) {
         return operator=(operator-(n));
     }
 }
 
-template<class Key, class Value>
+template<typename Key, typename Value>
 crap::binary_search_tree_reverse_iterator_t<Key, Value> operator+(uint32_t n, crap::binary_search_tree_reverse_iterator_t<Key, Value>& rhs);
 
-template<class Key, class Value>
+template<typename Key, typename Value>
 crap::binary_search_tree_reverse_iterator_t<Key, Value> operator+(uint32_t n, crap::binary_search_tree_reverse_iterator_t<Key, Value>& rhs) {
     return rhs + n;
 }

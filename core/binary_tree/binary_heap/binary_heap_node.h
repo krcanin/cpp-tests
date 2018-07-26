@@ -2,7 +2,7 @@
 #define BINARY_HEAP_NODE_H
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class binary_heap_node_t {
         public:
             Key key;
@@ -13,7 +13,7 @@ namespace mylib {
             binary_heap_node_t(binary_heap_node_t<Key, Value>&& rhs) = default;
     };
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_node_t<Key, Value>::binary_heap_node_t(Key key, Value value) : key(key), value(value) {}
 }
 

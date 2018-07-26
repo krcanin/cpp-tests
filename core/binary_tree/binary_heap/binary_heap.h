@@ -10,7 +10,7 @@ namespace mylib {
     // -----------
     // - standard comparison function results in min-heap
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class binary_heap_t {
         public:
             list_t<binary_heap_node_t<Key, Value>*> _data;
@@ -55,27 +55,27 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     uint32_t binary_heap_t<Key, Value>::heap_size() {
         return _count;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     uint32_t binary_heap_t<Key, Value>::left(uint32_t i) {
         return (2 * i) + 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     uint32_t binary_heap_t<Key, Value>::parent(uint32_t i) {
         return (i - 1) / 2;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     uint32_t binary_heap_t<Key, Value>::right(uint32_t i) {
         return (2 * i) + 2;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_heap_t<Key, Value>::heapify(uint32_t i) {
         // https://www.youtube.com/watch?v=B7hVxCmfPtM
 
@@ -109,13 +109,13 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>::binary_heap_t(const binary_heap_t<Key, Value>& rhs) : _data(rhs._data) {
         _count = rhs._count;
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>::binary_heap_t(binary_heap_t<Key, Value>&& rhs) : _data(std::move(rhs._data)) {
         _count = rhs._count;
         rhs._count = 0;
@@ -124,21 +124,21 @@ namespace mylib {
         rhs._compare = nullptr;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>::~binary_heap_t() {
         for(uint32_t i = 0; i < _data.length; i += 1) {
             delete _data[i];
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(const binary_heap_t<Key, Value>& rhs) {
         _data = list_t<binary_heap_node_t<Key, Value>*>(rhs._data);
         _count = rhs._count;
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>& binary_heap_t<Key, Value>::operator=(binary_heap_t<Key, Value>&& rhs) {
         _data = list_t<binary_heap_node_t<Key, Value>*>(std::move(rhs._data));
 
@@ -153,15 +153,15 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_heap_t<Key, Value>::binary_heap_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool binary_heap_t<Key, Value>::empty() const {
         return _count == 0;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> binary_heap_t<Key, Value>::extract() {
         std::pair<Key, Value> result = peek();
 
@@ -173,7 +173,7 @@ namespace mylib {
         return result;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_heap_t<Key, Value>::insert(Key key, Value value) {
         _data.append(new binary_heap_node_t<Key, Value>(key, value));
 
@@ -186,7 +186,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> binary_heap_t<Key, Value>::peek() const {
         if(_count == 0) {
             throw "Heap is empty";

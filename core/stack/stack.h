@@ -6,7 +6,7 @@
 #include "singly_linked_list.h"
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class stack_t {
         private:
             singly_linked_list_t<Value>* _elements;
@@ -59,7 +59,7 @@ namespace mylib {
         rhs._elements = nullptr;
     }
 
-    template<class Value>
+    template<typename Value>
     stack_t<Value>::~stack_t() {
         delete _elements;
     }

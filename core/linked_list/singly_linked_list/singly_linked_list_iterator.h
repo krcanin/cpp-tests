@@ -4,7 +4,7 @@
 #include "singly_linked_list_node.h"
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class singly_linked_list_iterator_t {
         private:
             singly_linked_list_node_t<Value>* _node;
@@ -41,26 +41,26 @@ namespace mylib {
     // MANDATORY
     // -----------
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>::singly_linked_list_iterator_t(singly_linked_list_node_t<Value>* node) : _node(node) {}
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>::singly_linked_list_iterator_t(const singly_linked_list_iterator_t<Value>& rhs) : _node(rhs._node) {}
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>::singly_linked_list_iterator_t(singly_linked_list_iterator_t<Value>&& rhs) {
         _node = rhs._node;
         rhs._node = nullptr;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>& singly_linked_list_iterator_t<Value>::operator=(const singly_linked_list_iterator_t<Value>& rhs) {
         _node = rhs._node;
         
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>& singly_linked_list_iterator_t<Value>::operator=(singly_linked_list_iterator_t<Value>&& rhs) {
         _node = rhs._node;
         rhs._node = nullptr;
@@ -72,40 +72,40 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value> singly_linked_list_iterator_t<Value>::operator++(int) {
         singly_linked_list_iterator_t<Value> copy(*this);
         operator++();
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>& singly_linked_list_iterator_t<Value>::operator++() {
         _node = !_node ? _node : _node->next;
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     bool singly_linked_list_iterator_t<Value>::operator==(singly_linked_list_iterator_t<Value> rhs) {
         return _node == rhs._node;
     }
 
-    template<class Value>
+    template<typename Value>
     bool singly_linked_list_iterator_t<Value>::operator!=(singly_linked_list_iterator_t<Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     Value singly_linked_list_iterator_t<Value>::operator*() {
         return *(operator->());
     }
 
-    template<class Value>
+    template<typename Value>
     Value* singly_linked_list_iterator_t<Value>::operator->() {
         return &(_node->value);
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value> singly_linked_list_iterator_t<Value>::operator+(uint32_t n) {
         singly_linked_list_iterator_t<Value> result(*this);
         
@@ -116,16 +116,16 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value>& singly_linked_list_iterator_t<Value>::operator+=(uint32_t n) {
         operator=(operator+(n));
     }
 }
 
-template<class Value>
+template<typename Value>
 crap::singly_linked_list_iterator_t<Value> operator+(uint32_t n, crap::singly_linked_list_iterator_t<Value>& rhs);
 
-template<class Value>
+template<typename Value>
 crap::singly_linked_list_iterator_t<Value> operator+(uint32_t n, crap::singly_linked_list_iterator_t<Value>& rhs) {
     return rhs + n;
 }

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class avl_tree_node_t {
         public:
             Key key;
@@ -18,7 +18,7 @@ namespace mylib {
             avl_tree_node_t(avl_tree_node_t<Key, Value>&& rhs) = default;
     };
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>::avl_tree_node_t(Key key, Value value) : key(key), value(value) {}
 }
 

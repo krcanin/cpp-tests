@@ -2,7 +2,7 @@
 #define BINARY_SEARCH_TREE_NODE_H
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class binary_search_tree_node_t {
         public:
             Key key;
@@ -15,7 +15,7 @@ namespace mylib {
             binary_search_tree_node_t(binary_search_tree_node_t<Key, Value>&& rhs) = default;
     };
     
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>::binary_search_tree_node_t(Key key, Value value) : key(key), value(value) {}
 }
 

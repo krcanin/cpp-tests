@@ -8,7 +8,7 @@
 #include "../../list/list.h"
 
 namespace mylib {
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class avl_tree_reverse_iterator_t {
         private:
             avl_tree_node_t<Key, Value>* _head = nullptr;
@@ -57,7 +57,7 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_node_t<Key, Value>* avl_tree_reverse_iterator_t<Key, Value>::in_order(avl_tree_node_t<Key, Value>* node, int32_t* ptr) {
         if(node) {
             avl_tree_node_t<Key, Value>* result;
@@ -86,13 +86,13 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>::avl_tree_reverse_iterator_t(const avl_tree_reverse_iterator_t<Key, Value>& rhs) {
         _head = rhs._head;
     	_index = rhs._index;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>::avl_tree_reverse_iterator_t(avl_tree_reverse_iterator_t<Key, Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
@@ -101,7 +101,7 @@ namespace mylib {
         rhs._index = 0;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator=(const avl_tree_reverse_iterator_t<Key, Value>& rhs) {
     	this->~avl_tree_reverse_iterator_t();
 
@@ -111,7 +111,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator=(avl_tree_reverse_iterator_t<Key, Value>&& rhs) {
     	this->~avl_tree_reverse_iterator_t();
 
@@ -128,10 +128,10 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>::avl_tree_reverse_iterator_t(avl_tree_node_t<Key, Value>* node, uint32_t start_index) : _head(node), _index(start_index) {}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_reverse_iterator_t<Key, Value>::operator++(int) {
         avl_tree_reverse_iterator_t<Key, Value> copy(*this);
 
@@ -140,23 +140,23 @@ namespace mylib {
         return copy;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator++() {
         operator+=(1);
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool avl_tree_reverse_iterator_t<Key, Value>::operator==(avl_tree_reverse_iterator_t<Key, Value> rhs) {
         return _head == rhs._head && _index == rhs._index;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool avl_tree_reverse_iterator_t<Key, Value>::operator!=(avl_tree_reverse_iterator_t<Key, Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> avl_tree_reverse_iterator_t<Key, Value>::operator*() {
         int32_t* ptr = new int32_t(0);
         avl_tree_node_t<Key, Value>* node = in_order(_head, ptr);
@@ -164,7 +164,7 @@ namespace mylib {
         return std::make_pair(node->key, node->value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_reverse_iterator_t<Key, Value>::operator--(int) {
         avl_tree_reverse_iterator_t<Key, Value> copy(*this);
 
@@ -173,41 +173,41 @@ namespace mylib {
         return copy;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator--() {
         operator-=(1);
         return *this;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_reverse_iterator_t<Key, Value>::operator+(uint32_t n) {
         avl_tree_reverse_iterator_t<Key, Value> result(*this);
         result._index += n;
         return result;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value> avl_tree_reverse_iterator_t<Key, Value>::operator-(uint32_t n) {
     	avl_tree_reverse_iterator_t<Key, Value> result(*this);
 		result._index -= n;
 		return result;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator+=(uint32_t n) {
         return operator=(operator+(n));
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     avl_tree_reverse_iterator_t<Key, Value>& avl_tree_reverse_iterator_t<Key, Value>::operator-=(uint32_t n) {
         return operator=(operator-(n));
     }
 }
 
-template<class Key, class Value>
+template<typename Key, typename Value>
 crap::avl_tree_reverse_iterator_t<Key, Value> operator+(uint32_t n, crap::avl_tree_reverse_iterator_t<Key, Value>& rhs);
 
-template<class Key, class Value>
+template<typename Key, typename Value>
 crap::avl_tree_reverse_iterator_t<Key, Value> operator+(uint32_t n, crap::avl_tree_reverse_iterator_t<Key, Value>& rhs) {
     return rhs + n;
 }

@@ -9,7 +9,7 @@
 #include "singly_linked_list_iterator.h"
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class singly_linked_list_t {
         private:
             singly_linked_list_node_t<Value>* _head = nullptr;
@@ -101,7 +101,7 @@ namespace mylib {
     // PRIVATE
     // -----------
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_node_t<Value>* singly_linked_list_t<Value>::get_node(uint32_t index) const {
         if(index >= _count) {
             throw "Index out of range";
@@ -118,7 +118,7 @@ namespace mylib {
         return current;
     }
     
-    template<class Value>
+    template<typename Value>
     template<class U>
     void singly_linked_list_t<Value>::merge_sort(singly_linked_list_node_t<Value>** head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         if(*head && (*head)->next) {
@@ -132,7 +132,7 @@ namespace mylib {
         }
     }
  
-    template<class Value>
+    template<typename Value>
     template<class U>
     singly_linked_list_node_t<Value>* singly_linked_list_t<Value>::merge(singly_linked_list_node_t<Value>* first, singly_linked_list_node_t<Value>* second, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         singly_linked_list_node_t<Value>* result;
@@ -157,7 +157,7 @@ namespace mylib {
         }
     }
  
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::split(singly_linked_list_node_t<Value>* head, singly_linked_list_node_t<Value>** front, singly_linked_list_node_t<Value>** back) const {
         singly_linked_list_node_t<Value>* slow = head;
         singly_linked_list_node_t<Value>* fast = head->next;
@@ -180,17 +180,17 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>::singly_linked_list_t() {}
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>::singly_linked_list_t(const singly_linked_list_t<Value>& rhs) {
         for(Value item : rhs) {
             append(item);
         }
     }
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>::singly_linked_list_t(singly_linked_list_t<Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
@@ -202,12 +202,12 @@ namespace mylib {
         rhs._count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>::~singly_linked_list_t() {
         clear();
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>& singly_linked_list_t<Value>::operator=(const singly_linked_list_t<Value>& rhs) {
         clear();
         
@@ -216,7 +216,7 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>& singly_linked_list_t<Value>::operator=(singly_linked_list_t<Value>&& rhs) {
         clear();
         
@@ -234,7 +234,7 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::append(Value item) {
         singly_linked_list_node_t<Value>* node = new singly_linked_list_node_t<Value>(item);
         
@@ -248,19 +248,19 @@ namespace mylib {
         _count += 1;
     }
 
-    template<class Value>
+    template<typename Value>
     template<class... Args>
     void singly_linked_list_t<Value>::append(Value item, Args... rest) {
         append(item);
         append(rest...);
     }
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value> singly_linked_list_t<Value>::begin() const {
         return singly_linked_list_iterator_t<Value>(_head);
     }
             
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::clear() {
         singly_linked_list_node_t<Value> *current, *next;
         
@@ -276,12 +276,12 @@ namespace mylib {
         _count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::copy() const {
         return new singly_linked_list_t<Value>(*this);
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t singly_linked_list_t<Value>::count(Value item) const {
         uint32_t result = 0;
         
@@ -294,12 +294,12 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_iterator_t<Value> singly_linked_list_t<Value>::end() const {
         return singly_linked_list_iterator_t<Value>(nullptr);
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iterator>
     void singly_linked_list_t<Value>::extend(Iterator it) {
         for(Value item : it) {
@@ -307,26 +307,26 @@ namespace mylib {
         }
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::extend(std::initializer_list<Value> elements) {
         for(Value item : elements) {
             append(item);
         }
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::extend(Value* arr, uint32_t l, uint32_t r){
         for(uint32_t i = l; i < r; i += 1) {
             append(arr[i]);
         }
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::extend(Value* arr, uint32_t n){
         extend(arr, 0, n);
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t singly_linked_list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         uint32_t i = 0;
         
@@ -341,17 +341,17 @@ namespace mylib {
         throw "Item not found";
     }
     
-    template<class Value>
+    template<typename Value>
     uint32_t singly_linked_list_t<Value>::index(Value item, uint32_t start) const {
         return index(item, start, _count);
     }
     
-    template<class Value>
+    template<typename Value>
     uint32_t singly_linked_list_t<Value>::index(Value item) const {
         return index(item, 0, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::insert(uint32_t index, Value item) {
         singly_linked_list_node_t<Value>* node = new singly_linked_list_node_t<Value>(item);
         
@@ -372,7 +372,7 @@ namespace mylib {
         _count += 1;
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     bool singly_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const {
         if(_count <= 1) {
@@ -396,23 +396,23 @@ namespace mylib {
         }
     }
     
-    template<class Value>
+    template<typename Value>
     template<class U>
     bool singly_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
     
-    template<class Value>
+    template<typename Value>
     bool singly_linked_list_t<Value>::is_sorted(std::function<int32_t(Value, Value)> cmp) const {
         return is_sorted<Value>(cmp, [](Value x) { return x; }, false);
     }
     
-    template<class Value>
+    template<typename Value>
     bool singly_linked_list_t<Value>::is_sorted() const {
         return is_sorted<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     Value singly_linked_list_t<Value>::pop(uint32_t index) {
         if(index >= _count) {
             throw "Index out of range";
@@ -446,17 +446,17 @@ namespace mylib {
         }
     }
     
-    template<class Value>
+    template<typename Value>
     Value singly_linked_list_t<Value>::pop() {
         return pop(_count - 1);
     }
 
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::remove(Value item) {
         pop(index(item));
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::reverse() {
         if(_count > 1) {
             singly_linked_list_node_t<Value> *prev, *current, *next;
@@ -476,30 +476,30 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     void singly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         // https://www.cdn.geeksforgeeks.org/merge-sort-for-linked-list/
         merge_sort<U>(&_head, cmp, key, reverse);
     }
     
-    template<class Value>
+    template<typename Value>
     template<class U>
     void singly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key) {
         sort(cmp, key, false);
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp) {
         sort<Value>(cmp, [](Value x) { return x; }, false);
     }
     
-    template<class Value>
+    template<typename Value>
     void singly_linked_list_t<Value>::sort() {
         sort<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::sublist(uint32_t left, uint32_t right, uint32_t step) const {
         if(left >= _count) {
             throw "Invalid left index";
@@ -525,13 +525,13 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     Value& singly_linked_list_t<Value>::operator[](uint32_t index) const {
         singly_linked_list_node_t<Value>* node = get_node(index);
         return node->value;
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iterator>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::operator+(Iterator rhs) const {
         singly_linked_list_t<Value>* result = new singly_linked_list_t<Value>(*this);
@@ -543,7 +543,7 @@ namespace mylib {
         return result;
     }
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::operator+(const singly_linked_list_t<Value>& rhs) const {
         singly_linked_list_t<Value>* result = new singly_linked_list_t<Value>(*this);
         
@@ -554,7 +554,7 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iterator>
     singly_linked_list_t<Value>& singly_linked_list_t<Value>::operator+=(Iterator rhs) {
         for(Value item : rhs) {
@@ -564,7 +564,7 @@ namespace mylib {
         return *this;
     }
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>& singly_linked_list_t<Value>::operator+=(const singly_linked_list_t<Value>& rhs) {
         for(Value item : rhs) {
             append(item);
@@ -573,7 +573,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::operator*(uint32_t amount) const {
         singly_linked_list_t<Value>* result = new singly_linked_list_t<Value>();
         

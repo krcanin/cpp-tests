@@ -4,7 +4,7 @@
 #include <cstdint>
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class list_reverse_iterator_t {
         protected:
             Value** _elements;
@@ -49,13 +49,13 @@ namespace mylib {
     // MANDATORY
     // -----------
     
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>::list_reverse_iterator_t(Value** elements, uint32_t index, uint32_t count) : _elements(elements), _index(index), _count(count) {}
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>::list_reverse_iterator_t(const list_reverse_iterator_t<Value>& rhs) : _elements(rhs._elements), _index(rhs._index), _count(rhs._count) {}
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>::list_reverse_iterator_t(list_reverse_iterator_t<Value>&& rhs) {
         _elements = rhs._elements;
         rhs._elements = nullptr;
@@ -67,7 +67,7 @@ namespace mylib {
         rhs._count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator=(const list_reverse_iterator_t<Value>& rhs) {
         _elements = rhs._elements;
         _index = rhs._index;
@@ -76,7 +76,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator=(list_reverse_iterator_t<Value>&& rhs) {
         _elements = rhs._elements;
         rhs._elements = nullptr;
@@ -94,7 +94,7 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_reverse_iterator_t<Value>::operator++(int) {
         list_reverse_iterator_t<Value> copy(*this);
         
@@ -103,7 +103,7 @@ namespace mylib {
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator++() {
         if(_index == 0) {
             _elements = nullptr;
@@ -114,34 +114,34 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     bool list_reverse_iterator_t<Value>::operator==(list_reverse_iterator_t<Value> rhs) {
         return _elements == rhs._elements;
     }
 
-    template<class Value>
+    template<typename Value>
     bool list_reverse_iterator_t<Value>::operator!=(list_reverse_iterator_t<Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     Value list_reverse_iterator_t<Value>::operator*() {
         return *(operator->());
     }
 
-    template<class Value>
+    template<typename Value>
     Value* list_reverse_iterator_t<Value>::operator->() {
         return _elements[_index];
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_reverse_iterator_t<Value>::operator--(int) {
         list_reverse_iterator_t<Value> copy(*this);
         operator--();
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator--() {
         if(_index == (_count - 1)) {
             _elements = nullptr;
@@ -152,7 +152,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_reverse_iterator_t<Value>::operator+(uint32_t n) {
         list_reverse_iterator_t<Value> result(*this);
         
@@ -165,7 +165,7 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_reverse_iterator_t<Value>::operator-(uint32_t n) {
         list_reverse_iterator_t<Value> result(*this);
         
@@ -178,21 +178,21 @@ namespace mylib {
         return result;
     }
     
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator+=(uint32_t n) {
         operator=(operator+(n));
     }
     
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value>& list_reverse_iterator_t<Value>::operator-=(uint32_t n) {
         operator=(operator-(n));
     }
 }
 
-template<class Value>
+template<typename Value>
 crap::list_reverse_iterator_t<Value> operator+(uint32_t n, crap::list_reverse_iterator_t<Value>& rhs);
 
-template<class Value>
+template<typename Value>
 crap::list_reverse_iterator_t<Value> operator+(uint32_t n, crap::list_reverse_iterator_t<Value>& rhs) {
     return rhs + n;
 }

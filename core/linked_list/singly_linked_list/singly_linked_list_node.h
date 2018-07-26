@@ -2,7 +2,7 @@
 #define SINGLY_LINKED_LIST_NODE_H
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class singly_linked_list_node_t {
         public:
             singly_linked_list_node_t<Value>* next = nullptr;
@@ -13,7 +13,7 @@ namespace mylib {
             singly_linked_list_node_t(singly_linked_list_node_t<Value>&& rhs) = default;
     };
     
-    template<class Value>
+    template<typename Value>
     singly_linked_list_node_t<Value>::singly_linked_list_node_t(Value value) : value(value) {}
 }
 

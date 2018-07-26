@@ -11,7 +11,7 @@
 #include "list_reverse_iterator.h"
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class list_t {
         // -----------
         // NOTES
@@ -122,7 +122,7 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::append(Value* item) {
         _elements[_count++] = item;
 
@@ -131,7 +131,7 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     void list_t<Value>::insertion_sort(uint32_t left, uint32_t right, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         uint32_t j;
@@ -153,7 +153,7 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     void list_t<Value>::merge(uint32_t left, uint32_t middle, uint32_t right, std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         uint32_t n1 = middle - left;
@@ -198,7 +198,7 @@ namespace mylib {
         delete[] right_part;
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::resize(uint32_t n) {
         if(n > _size) {
             Value** copy = new Value*[n];
@@ -227,17 +227,17 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::list_t() : list_t(128) {}
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::list_t(const list_t<Value>& rhs) : list_t(rhs._initial_size) {
         for(Value item : rhs) {
             append(item);
         }
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::list_t(list_t<Value>&& rhs) {
         _elements = rhs._elements;
         _size = rhs._size;
@@ -249,7 +249,7 @@ namespace mylib {
         rhs._count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::~list_t() {
         for (uint32_t i = 0; i < _count; i += 1) {
             delete _elements[i];
@@ -258,7 +258,7 @@ namespace mylib {
         delete[] _elements;
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>& list_t<Value>::operator=(const list_t<Value>& rhs) {
         clear();
 
@@ -267,7 +267,7 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>& list_t<Value>::operator=(list_t<Value>&& rhs) {
         clear();
 
@@ -284,7 +284,7 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::list_t(uint32_t initial_size) : _initial_size(initial_size) {
         if (initial_size == 0) {
             throw "Initial size must be > 0";
@@ -300,43 +300,43 @@ namespace mylib {
         _count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>::list_t(std::initializer_list<Value> rhs) : list_t(128) {
         for(Value item : rhs) {
             append(item);
         }
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::append(Value item) {
         append(new Value(item));
     }
 
-    template<class Value>
+    template<typename Value>
     template<class... Args>
     void list_t<Value>::append(Value item, Args... rest) {
         append(item);
         append(rest...);
     }
 
-    template<class Value>
+    template<typename Value>
     list_iterator_t<Value> list_t<Value>::begin() const {
         return list_iterator_t<Value>(_elements, 0, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::clear() {
         this->~list_t();
         _elements = new Value*[_size = _initial_size]();
         _count = 0;
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>* list_t<Value>::copy() const {
         return new list_t<Value>(*this);
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t list_t<Value>::count(Value item) const {
         uint32_t result = 0;
 
@@ -349,12 +349,12 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     list_iterator_t<Value> list_t<Value>::end() const {
         return list_iterator_t<Value>(nullptr, _count, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iter>
     void list_t<Value>::extend(Iter rhs) {
         for(Value item : rhs) {
@@ -362,26 +362,26 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::extend(std::initializer_list<Value> elements) {
         for (Value item : elements) {
             append(item);
         }
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::extend(Value* arr, uint32_t l, uint32_t r) {
         for (uint32_t i = l; i < r; i += 1) {
             append(arr[i]);
         }
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::extend(Value* arr, uint32_t n) {
         extend(arr, 0, n);
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         if (start >= _count) {
             throw "Start index out of range";
@@ -400,17 +400,17 @@ namespace mylib {
         throw "Item not found";
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t list_t<Value>::index(Value item, uint32_t start) const {
         return index(item, start, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     uint32_t list_t<Value>::index(Value item) const {
         return index(item, 0, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::insert(uint32_t index, Value item) {
         if (index > _count) {
             throw "Index out of range";
@@ -428,7 +428,7 @@ namespace mylib {
         _elements[index] = new Value(item);
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     bool list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const {
         if(_count <= 1) {
@@ -452,23 +452,23 @@ namespace mylib {
         }
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     bool list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
 
-    template<class Value>
+    template<typename Value>
     bool list_t<Value>::is_sorted(std::function<int32_t(Value, Value)> cmp) const {
         return is_sorted<Value>(cmp, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     bool list_t<Value>::is_sorted() const {
         return is_sorted<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     Value list_t<Value>::pop(uint32_t index) {
         if (index >= _count) {
             throw "Index out of range";
@@ -486,34 +486,34 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     Value list_t<Value>::pop() {
         return pop(_count - 1);
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_t<Value>::rbegin() const {
         return list_reverse_iterator_t<Value>(_elements, _count - 1, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::remove(Value item) {
         pop(index(item));
     }
 
-    template<class Value>
+    template<typename Value>
     list_reverse_iterator_t<Value> list_t<Value>::rend() const {
         return list_reverse_iterator_t<Value>(nullptr, 0, _count);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::reverse() {
         for (uint32_t i = 0, end = _count / 2; i < end; i += 1) {
             std::swap(_elements[i], _elements[_count - i - 1]);
         }
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     void list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         // inspired by https://www.geeksforgeeks.org/timsort/
@@ -550,23 +550,23 @@ namespace mylib {
          */
     }
 
-    template<class Value>
+    template<typename Value>
     template<class U>
     void list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key) {
         sort(cmp, key, false);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp) {
         sort<Value>(cmp, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     void list_t<Value>::sort() {
         sort<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>* list_t<Value>::sublist(uint32_t left, uint32_t right, uint32_t step) const {
         if (right >= _count) {
             throw "End index out of range";
@@ -585,12 +585,12 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     Value& list_t<Value>::operator[](uint32_t index) const {
         return *_elements[index];
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iter>
     list_t<Value>* list_t<Value>::operator+(Iter rhs) const {
         list_t<Value>* result = new list_t<Value>(*this);
@@ -602,7 +602,7 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>* list_t<Value>::operator+(const list_t<Value>& rhs) const {
         list_t<Value>* result = new list_t<Value>(*this);
 
@@ -613,18 +613,18 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     template<class Iter>
     list_t<Value>& list_t<Value>::operator+=(Iter rhs) {
         return operator=(operator+(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>& list_t<Value>::operator+=(const list_t<Value>& rhs) {
         return operator=(operator+(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     list_t<Value>* list_t<Value>::operator*(uint32_t amount) const {
         if(amount == 0) {
             return new list_t<Value>();

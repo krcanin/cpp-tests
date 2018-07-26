@@ -2,7 +2,7 @@
 #define XOR_LINKED_LIST_NODE_H
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class xor_linked_list_node_t {
         public:
             Value value;
@@ -13,7 +13,7 @@ namespace mylib {
             xor_linked_list_node_t(xor_linked_list_node_t<Value>&& rhs) = default;
     };
     
-    template<class Value>
+    template<typename Value>
     xor_linked_list_node_t<Value>::xor_linked_list_node_t(Value value) : value(value) {}
 }
 

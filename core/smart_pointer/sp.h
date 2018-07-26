@@ -14,8 +14,10 @@ namespace mylib {
 
             ~sp();
 
+            PointerType* get();
+
             PointerType& operator*();
-            PointerType* operator*();
+            PointerType* operator->();
     };
 
     template<class PointerType>
@@ -44,8 +46,14 @@ namespace mylib {
         *rc = *rc - 1;
 
         if(*rc == 0) {
+            delete rc;
             delete ptr;
         }
+    }
+
+    template<class PointerType>
+    PointerType* sp<PointerType>::get() {
+        return ptr;
     }
 
     template<class PointerType>
@@ -54,7 +62,7 @@ namespace mylib {
     }
 
     template<class PointerType>
-    PointerType* sp<PointerType>::operator*() {
+    PointerType* sp<PointerType>::operator->() {
         return ptr;
     }
 }

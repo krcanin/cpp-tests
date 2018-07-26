@@ -15,7 +15,7 @@ namespace mylib {
 	// - iterator constructs a NEW list with copies of all key-value-pairs depending on the current state
     //   and thus you cannot manipulate the elements by iterator
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     class binary_search_tree_t {
         private:
             binary_search_tree_node_t<Key, Value>* _head = nullptr;
@@ -82,7 +82,7 @@ namespace mylib {
     // PRIVATE
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::copy(binary_search_tree_node_t<Key, Value>* node) const {
         if(node) {
             binary_search_tree_node_t<Key, Value>* result = new binary_search_tree_node_t<Key, Value>(node->key, node->value);
@@ -94,7 +94,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::dispose(binary_search_tree_node_t<Key, Value>* node) {
         if(node) {
             dispose(node->left);
@@ -105,7 +105,7 @@ namespace mylib {
         return nullptr;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::get(binary_search_tree_node_t<Key, Value>* node, Key key) const {
         if (node) {
             int cmp_r = _compare(key, node->key);
@@ -122,7 +122,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::insert(binary_search_tree_node_t<Key, Value>* node, Key key, Value value) {
         if (node) {
             int cmp_r = _compare(key, node->key);
@@ -141,7 +141,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::max(binary_search_tree_node_t<Key, Value>* node) const {
         if(node) {
             if(node->right) {
@@ -154,7 +154,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::min(binary_search_tree_node_t<Key, Value>* node) const {
         if(node) {
             if(node->left) {
@@ -167,7 +167,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::remove(binary_search_tree_node_t<Key, Value>* node, Key key) {
         if (node) {
             int x = _compare(key, node->key);
@@ -207,7 +207,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::remove_max(binary_search_tree_node_t<Key, Value>* node) {
         if(node) {
             if(node->right) {
@@ -222,7 +222,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_node_t<Key, Value>* binary_search_tree_t<Key, Value>::remove_min(binary_search_tree_node_t<Key, Value>* node) {
         if(node) {
             if(node->left) {
@@ -241,14 +241,14 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>::binary_search_tree_t(const binary_search_tree_t<Key, Value>& rhs) {
         _head = copy(rhs._head);
         _count = rhs._count;
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>::binary_search_tree_t(binary_search_tree_t<Key, Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
@@ -260,12 +260,12 @@ namespace mylib {
         rhs._compare = nullptr;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>::~binary_search_tree_t() {
         clear();
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>& binary_search_tree_t<Key, Value>::operator=(const binary_search_tree_t<Key, Value>& rhs) {
         clear();
 
@@ -274,7 +274,7 @@ namespace mylib {
         _compare = rhs._compare;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>& binary_search_tree_t<Key, Value>::operator=(binary_search_tree_t<Key, Value>&& rhs) {
         clear();
 
@@ -292,43 +292,43 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_t<Key, Value>::binary_search_tree_t(std::function<int32_t(Key, Key)> compare) : _compare(compare) {}
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::begin() const {
         return binary_search_tree_iterator_t<Key, Value>(_head, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::end() const {
     	return binary_search_tree_iterator_t<Key, Value>(nullptr, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::rbegin() const {
         return binary_search_tree_reverse_iterator_t<Key, Value>(_head, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     binary_search_tree_reverse_iterator_t<Key, Value> binary_search_tree_t<Key, Value>::rend() const {
         return binary_search_tree_reverse_iterator_t<Key, Value>(nullptr, _count);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::change_key(Key old_key, Key new_key) {
         Value value = get(old_key);
         remove(old_key);
         insert(new_key, value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::clear() {
         _head = dispose(_head);
         _count = 0;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     Value& binary_search_tree_t<Key, Value>::get(Key key) const {
         binary_search_tree_node_t<Key, Value>* node = get(_head, key);
 
@@ -339,13 +339,13 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::insert(Key key, Value value) {
         _head = insert(_head, key, value);
         _count += 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> binary_search_tree_t<Key, Value>::max() const {
         if(_count == 0) {
             throw "Empty BST";
@@ -355,7 +355,7 @@ namespace mylib {
         return std::make_pair(node->key, node->value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     std::pair<Key, Value> binary_search_tree_t<Key, Value>::min() const {
         if(_count == 0) {
             throw "Empty BST";
@@ -365,7 +365,7 @@ namespace mylib {
         return std::make_pair(node->key, node->value);
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove(Key key) {
         if(_count == 0) {
             throw "Empty BST";
@@ -375,7 +375,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove_max() {
         if(_count == 0) {
             throw "Empty BST";
@@ -385,7 +385,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove_min() {
         if(_count == 0) {
             throw "Empty BST";
@@ -395,7 +395,7 @@ namespace mylib {
         _count -= 1;
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     bool binary_search_tree_t<Key, Value>::search(Key key) const {
         binary_search_tree_node_t<Key, Value>* node = get(_head, key);
 
@@ -406,7 +406,7 @@ namespace mylib {
         }
     }
 
-    template<class Key, class Value>
+    template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::update(Key key, Value value) {
         binary_search_tree_node_t<Key, Value>* node = get(_head, key);
 

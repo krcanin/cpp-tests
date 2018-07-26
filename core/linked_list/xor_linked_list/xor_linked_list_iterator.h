@@ -4,7 +4,7 @@
 #include "xor_linked_list_node.h"
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class xor_linked_list_iterator_t {
             xor_linked_list_node_t<Value> *_current, *_prev;
         public:
@@ -46,13 +46,13 @@ namespace mylib {
     // MANDATORY
     // -----------
     
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>::xor_linked_list_iterator_t(xor_linked_list_node_t<Value>* current, xor_linked_list_node_t<Value>* prev) : _current(current), _prev(prev) {}
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>::xor_linked_list_iterator_t(const xor_linked_list_iterator_t<Value>& rhs) : _current(rhs._current), _prev(rhs._prev) {}
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>::xor_linked_list_iterator_t(xor_linked_list_iterator_t<Value>&& rhs) {
         _current = rhs._current;
         rhs._current = nullptr;
@@ -61,7 +61,7 @@ namespace mylib {
         rhs._prev = nullptr;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator=(const xor_linked_list_iterator_t<Value>& rhs) {
         _current = rhs._current;
         _prev = rhs._prev;
@@ -69,7 +69,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator=(xor_linked_list_iterator_t<Value>&& rhs) {
         _current = rhs._current;
         rhs._current = nullptr;
@@ -84,7 +84,7 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_iterator_t<Value>::operator++(int) {
         xor_linked_list_iterator_t<Value> copy(*this);
         
@@ -93,7 +93,7 @@ namespace mylib {
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator++() {
         xor_linked_list_node_t<Value>* temp = _current;
         _current = reinterpret_cast<xor_linked_list_node_t<Value>*>(reinterpret_cast<intptr_t>(_current->npx) ^ reinterpret_cast<intptr_t>(_prev));
@@ -102,27 +102,27 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     bool xor_linked_list_iterator_t<Value>::operator==(xor_linked_list_iterator_t<Value> rhs) {
         return _current == rhs._current;
     }
 
-    template<class Value>
+    template<typename Value>
     bool xor_linked_list_iterator_t<Value>::operator!=(xor_linked_list_iterator_t<Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     Value xor_linked_list_iterator_t<Value>::operator*() {
         return *(operator->());
     }
 
-    template<class Value>
+    template<typename Value>
     Value* xor_linked_list_iterator_t<Value>::operator->() {
         return &(_current->value);
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_iterator_t<Value>::operator--(int) {
         xor_linked_list_iterator_t<Value> copy(*this);
         
@@ -131,7 +131,7 @@ namespace mylib {
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator--() {
         xor_linked_list_node_t<Value>* temp = _prev;
         
@@ -146,7 +146,7 @@ namespace mylib {
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_iterator_t<Value>::operator+(uint32_t n) {
         xor_linked_list_iterator_t<Value> copy(*this);
         
@@ -157,7 +157,7 @@ namespace mylib {
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_iterator_t<Value>::operator-(uint32_t n) {
         xor_linked_list_iterator_t<Value> copy(*this);
         
@@ -168,21 +168,21 @@ namespace mylib {
         return copy;
     }
     
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator+=(uint32_t n) {
         operator=(operator+(n));
     }
     
-    template<class Value>
+    template<typename Value>
     xor_linked_list_iterator_t<Value>& xor_linked_list_iterator_t<Value>::operator-=(uint32_t n) {
         operator=(operator-(n));
     }
 }
 
-template<class Value>
+template<typename Value>
 crap::xor_linked_list_iterator_t<Value> operator+(uint32_t n, crap::xor_linked_list_iterator_t<Value>& rhs);
 
-template<class Value>
+template<typename Value>
 crap::xor_linked_list_iterator_t<Value> operator+(uint32_t n, crap::xor_linked_list_iterator_t<Value>& rhs) {
     return rhs + n;
 }

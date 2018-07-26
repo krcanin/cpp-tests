@@ -2,7 +2,7 @@
 #define DOUBLY_LINKED_LIST_REVERSE_ITERATOR_H
 
 namespace mylib {
-    template<class Value>
+    template<typename Value>
     class doubly_linked_list_reverse_iterator_t {
         private:
             doubly_linked_list_node_t<Value>* _node;
@@ -44,26 +44,26 @@ namespace mylib {
     // MANDATORY
     // -----------
     
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>::doubly_linked_list_reverse_iterator_t(doubly_linked_list_node_t<Value>* node) : _node(node) {}
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>::doubly_linked_list_reverse_iterator_t(const doubly_linked_list_reverse_iterator_t<Value>& rhs) : _node(rhs._node) {}
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>::doubly_linked_list_reverse_iterator_t(doubly_linked_list_reverse_iterator_t<Value>&& rhs) {
         _node = rhs._node;
         rhs._node = nullptr;
     }
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator=(const doubly_linked_list_reverse_iterator_t<Value>& rhs) {
         _node = rhs._node;
         
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator=(doubly_linked_list_reverse_iterator_t<Value>&& rhs) {
         _node = rhs._node;
         rhs._node = nullptr;
@@ -75,53 +75,53 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value> doubly_linked_list_reverse_iterator_t<Value>::operator++(int) {
         doubly_linked_list_reverse_iterator_t<Value> copy(*this);
         operator++();
         return copy;
     }
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator++() {
         _node = !_node ? _node : _node->prev;
         return *this;
     }
 
-    template<class Value>
+    template<typename Value>
     bool doubly_linked_list_reverse_iterator_t<Value>::operator==(doubly_linked_list_reverse_iterator_t<Value> rhs) {
         return _node == rhs._node;
     }
 
-    template<class Value>
+    template<typename Value>
     bool doubly_linked_list_reverse_iterator_t<Value>::operator!=(doubly_linked_list_reverse_iterator_t<Value> rhs) {
         return !(operator==(rhs));
     }
 
-    template<class Value>
+    template<typename Value>
     Value doubly_linked_list_reverse_iterator_t<Value>::operator*() {
         return *(operator->());
     }
 
-    template<class Value>
+    template<typename Value>
     Value* doubly_linked_list_reverse_iterator_t<Value>::operator->() {
         return &(_node->value);
     }
     
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value> doubly_linked_list_reverse_iterator_t<Value>::operator--(int) {
         doubly_linked_list_reverse_iterator_t<Value> copy(*this);
         operator--();
         return copy;
     }
     
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator--() {
         _node = !_node ? _node : _node->next;
         return *this;
     }
     
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value> doubly_linked_list_reverse_iterator_t<Value>::operator+(uint32_t n) {
         doubly_linked_list_reverse_iterator_t<Value> result(*this);
         
@@ -132,7 +132,7 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value> doubly_linked_list_reverse_iterator_t<Value>::operator-(uint32_t n) {
         doubly_linked_list_reverse_iterator_t<Value> result(*this);
         
@@ -143,21 +143,21 @@ namespace mylib {
         return result;
     }
 
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator+=(uint32_t n) {
         operator=(operator+(n));
     }
     
-    template<class Value>
+    template<typename Value>
     doubly_linked_list_reverse_iterator_t<Value>& doubly_linked_list_reverse_iterator_t<Value>::operator-=(uint32_t n) {
         operator=(operator-(n));
     }
 }
 
-template<class Value>
+template<typename Value>
 crap::doubly_linked_list_reverse_iterator_t<Value> operator+(uint32_t n, crap::doubly_linked_list_reverse_iterator_t<Value>& rhs);
 
-template<class Value>
+template<typename Value>
 crap::doubly_linked_list_reverse_iterator_t<Value> operator+(uint32_t n, crap::doubly_linked_list_reverse_iterator_t<Value>& rhs) {
     return rhs + n;
 }
