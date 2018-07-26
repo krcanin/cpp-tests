@@ -18,9 +18,9 @@ namespace mylib {
             
             singly_linked_list_node_t<Value>* get_node(uint32_t index) const;
             
-            template<class U> void merge_sort(singly_linked_list_node_t<Value>** head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> void merge_sort(singly_linked_list_node_t<Value>** head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
             
-            template<class U> singly_linked_list_node_t<Value>* merge(singly_linked_list_node_t<Value>* first, singly_linked_list_node_t<Value>* second, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> singly_linked_list_node_t<Value>* merge(singly_linked_list_node_t<Value>* first, singly_linked_list_node_t<Value>* second, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
             
             void split(singly_linked_list_node_t<Value>* head, singly_linked_list_node_t<Value>** front, singly_linked_list_node_t<Value>** back) const;
         public:
@@ -44,7 +44,7 @@ namespace mylib {
             // -----------
 
             void append(Value item);
-            template<class... Args> void append(Value item, Args... rest);
+            template<typename... Args> void append(Value item, Args... rest);
 
             singly_linked_list_iterator_t<Value> begin() const;
             
@@ -56,7 +56,7 @@ namespace mylib {
             
             singly_linked_list_iterator_t<Value> end() const;
             
-            template<class Iterator> void extend(Iterator it);
+            template<typename Iterator> void extend(Iterator it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
             void extend(Value* arr, uint32_t n);
@@ -67,8 +67,8 @@ namespace mylib {
 
             void insert(uint32_t index, Value item);
 
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
             bool is_sorted(std::function<int32_t(Value, Value)> cmp) const;
             bool is_sorted() const;
 
@@ -79,8 +79,8 @@ namespace mylib {
 
             void reverse();
 
-            template<class U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
-            template<class U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key);
+            template<typename U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key);
             void sort(std::function<int32_t(Value, Value)> cmp);
             void sort();
 
@@ -88,10 +88,10 @@ namespace mylib {
 
             Value& operator[](uint32_t index) const;
 
-            template<class Iterator> singly_linked_list_t<Value>* operator+(Iterator rhs) const;
+            template<typename Iterator> singly_linked_list_t<Value>* operator+(Iterator rhs) const;
             singly_linked_list_t<Value>* operator+(const singly_linked_list_t<Value>& rhs) const;
 
-            template<class Iterator> singly_linked_list_t<Value>& operator+=(Iterator rhs);
+            template<typename Iterator> singly_linked_list_t<Value>& operator+=(Iterator rhs);
             singly_linked_list_t<Value>& operator+=(const singly_linked_list_t<Value>& rhs);
 
             singly_linked_list_t<Value>* operator*(uint32_t amount) const;
@@ -119,7 +119,7 @@ namespace mylib {
     }
     
     template<typename Value>
-    template<class U>
+    template<typename U>
     void singly_linked_list_t<Value>::merge_sort(singly_linked_list_node_t<Value>** head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         if(*head && (*head)->next) {
             singly_linked_list_node_t<Value> *first, *last;
@@ -133,7 +133,7 @@ namespace mylib {
     }
  
     template<typename Value>
-    template<class U>
+    template<typename U>
     singly_linked_list_node_t<Value>* singly_linked_list_t<Value>::merge(singly_linked_list_node_t<Value>* first, singly_linked_list_node_t<Value>* second, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         singly_linked_list_node_t<Value>* result;
 
@@ -249,7 +249,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class... Args>
+    template<typename... Args>
     void singly_linked_list_t<Value>::append(Value item, Args... rest) {
         append(item);
         append(rest...);
@@ -300,7 +300,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iterator>
+    template<typename Iterator>
     void singly_linked_list_t<Value>::extend(Iterator it) {
         for(Value item : it) {
             append(item);
@@ -373,7 +373,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool singly_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const {
         if(_count <= 1) {
             return true;
@@ -397,7 +397,7 @@ namespace mylib {
     }
     
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool singly_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
@@ -477,14 +477,14 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     void singly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         // https://www.cdn.geeksforgeeks.org/merge-sort-for-linked-list/
         merge_sort<U>(&_head, cmp, key, reverse);
     }
     
     template<typename Value>
-    template<class U>
+    template<typename U>
     void singly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key) {
         sort(cmp, key, false);
     }
@@ -532,7 +532,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iterator>
+    template<typename Iterator>
     singly_linked_list_t<Value>* singly_linked_list_t<Value>::operator+(Iterator rhs) const {
         singly_linked_list_t<Value>* result = new singly_linked_list_t<Value>(*this);
         
@@ -555,7 +555,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iterator>
+    template<typename Iterator>
     singly_linked_list_t<Value>& singly_linked_list_t<Value>::operator+=(Iterator rhs) {
         for(Value item : rhs) {
             append(item);

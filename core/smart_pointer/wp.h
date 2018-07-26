@@ -2,7 +2,7 @@
 #define wp_H
 
 namewpace mylib {
-    template<class PointerType>
+    template<typename PointerType>
     class wp {
         private:
             PointerType* ptr;
@@ -20,20 +20,20 @@ namewpace mylib {
             PointerType* operator->();
     };
 
-    template<class PointerType>
+    template<typename PointerType>
     wp<PointerType>::wp(PointerType* p) {
         ptr = p;
         rc = new int(1);
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     wp<PointerType>::wp(const wp<PointerType>& rhs) {
         ptr = rhs.ptr;
         rc = rhs.rc;
         *rc = *rc + 1;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     wp<PointerType>::wp(wp<PointerType>&& rhs) {
         ptr = rhs.ptr;
         rhs.ptr = nullptr;
@@ -41,20 +41,20 @@ namewpace mylib {
         rc = rhs.rc;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     wp<PointerType>::~wp() {}
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType* wp<PointerType>::get() {
         return ptr;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType& wp<PointerType>::operator*() {
         return *(operator->());
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType* wp<PointerType>::operator->() {
         return ptr;
     }

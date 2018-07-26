@@ -31,7 +31,7 @@ namespace mylib {
             bool empty();
             
             void push(Value item);
-            template<class... Args> void push(Value item, Args... rest);
+            template<typename... Args> void push(Value item, Args... rest);
             
             Value peek();
             
@@ -43,17 +43,17 @@ namespace mylib {
     // MANDATORY
     // -----------
 
-    template<class T>
+    template<typename T>
     stack_t<T>::stack_t() {
         _elements = new singly_linked_list_t<T>();
     }
     
-    template<class T>
+    template<typename T>
     stack_t<T>::stack_t(const stack_t<T>& rhs) {
         _elements = new singly_linked_list_t<T>(*(rhs._elements));
     }
     
-    template<class T>
+    template<typename T>
     stack_t<T>::stack_t(stack_t<T>&& rhs) {
         _elements = rhs._elements;
         rhs._elements = nullptr;
@@ -64,13 +64,13 @@ namespace mylib {
         delete _elements;
     }
 
-    template<class T>
+    template<typename T>
     stack_t<T>& stack_t<T>::operator=(const stack_t<T>& rhs) {
         delete _elements;
         _elements = new singly_linked_list_t<T>(*(rhs._elements));
     }
     
-    template<class T>
+    template<typename T>
     stack_t<T>& stack_t<T>::operator=(stack_t<T>&& rhs) {
         delete _elements;
         
@@ -82,30 +82,30 @@ namespace mylib {
     // USER-DEFINED
     // -----------
 
-    template<class T>
+    template<typename T>
     bool stack_t<T>::empty() {
         return _elements->length == 0;
     }
     
-    template<class T>
+    template<typename T>
     void stack_t<T>::push(T item) {
        _elements->insert(0, item); 
     }
     
-    template<class T>
-    template<class... Args>
+    template<typename T>
+    template<typename... Args>
     void stack_t<T>::push(T item, Args... rest) {
         push(item);
         push(rest...);
     }
     
     
-    template<class T>
+    template<typename T>
     T stack_t<T>::peek() {
         return _elements[0];
     }
     
-    template<class T>
+    template<typename T>
     T stack_t<T>::pop() {
         return _elements->pop(0);
     }

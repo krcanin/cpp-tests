@@ -30,9 +30,9 @@ namespace mylib {
 
             void append(Value* item);
 
-            template<class U> void insertion_sort(uint32_t left, uint32_t right, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> void insertion_sort(uint32_t left, uint32_t right, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
 
-            template<class U> void merge(uint32_t left, uint32_t middle, uint32_t right, std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> void merge(uint32_t left, uint32_t middle, uint32_t right, std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
 
             void resize(uint32_t n);
         public:
@@ -60,7 +60,7 @@ namespace mylib {
             list_t(std::initializer_list<Value> rhs);
 
             void append(Value item);
-            template<class... Args> void append(Value item, Args... rest);
+            template<typename... Args> void append(Value item, Args... rest);
 
             list_iterator_t<Value> begin() const;
 
@@ -72,7 +72,7 @@ namespace mylib {
 
             list_iterator_t<Value> end() const;
 
-            template<class Iter> void extend(Iter it);
+            template<typename Iter> void extend(Iter it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
             void extend(Value* arr, uint32_t n);
@@ -83,8 +83,8 @@ namespace mylib {
 
             void insert(uint32_t index, Value item);
 
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
             bool is_sorted(std::function<int32_t(Value, Value)> cmp) const;
             bool is_sorted() const;
 
@@ -100,8 +100,8 @@ namespace mylib {
             void reverse();
 
             // stable & in-place ~> Timsort
-            template<class U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
-            template<class U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key);
+            template<typename U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse);
+            template<typename U> void sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key);
             void sort(std::function<int32_t(Value, Value)> cmp);
             void sort();
 
@@ -109,10 +109,10 @@ namespace mylib {
 
             Value& operator[](uint32_t index) const;
 
-            template<class Iter> list_t<Value>* operator+(Iter rhs) const;
+            template<typename Iter> list_t<Value>* operator+(Iter rhs) const;
             list_t<Value>* operator+(const list_t<Value>& rhs) const;
 
-            template<class Iter> list_t<Value>& operator+=(Iter rhs);
+            template<typename Iter> list_t<Value>& operator+=(Iter rhs);
             list_t<Value>& operator+=(const list_t<Value>& rhs);
 
             list_t<Value>* operator*(uint32_t amount) const;
@@ -132,7 +132,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     void list_t<Value>::insertion_sort(uint32_t left, uint32_t right, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
         uint32_t j;
 
@@ -154,7 +154,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     void list_t<Value>::merge(uint32_t left, uint32_t middle, uint32_t right, std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         uint32_t n1 = middle - left;
         uint32_t n2 = right - middle;
@@ -313,7 +313,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class... Args>
+    template<typename... Args>
     void list_t<Value>::append(Value item, Args... rest) {
         append(item);
         append(rest...);
@@ -355,7 +355,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iter>
+    template<typename Iter>
     void list_t<Value>::extend(Iter rhs) {
         for(Value item : rhs) {
             append(item);
@@ -429,7 +429,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const {
         if(_count <= 1) {
             return true;
@@ -453,7 +453,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
@@ -514,7 +514,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     void list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         // inspired by https://www.geeksforgeeks.org/timsort/
         const uint32_t RUN_SIZE = 32;
@@ -551,7 +551,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     void list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key) {
         sort(cmp, key, false);
     }
@@ -591,7 +591,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iter>
+    template<typename Iter>
     list_t<Value>* list_t<Value>::operator+(Iter rhs) const {
         list_t<Value>* result = new list_t<Value>(*this);
 
@@ -614,7 +614,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iter>
+    template<typename Iter>
     list_t<Value>& list_t<Value>::operator+=(Iter rhs) {
         return operator=(operator+(rhs));
     }

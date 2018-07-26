@@ -1,7 +1,7 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-template<class T>
+template<typename T>
 class forward_iterator_i {
 	public:
 		virtual bool eof() = 0;
@@ -17,7 +17,7 @@ class forward_iterator_i {
 		}
 };
 
-template<class T>
+template<typename T>
 class iterator_i : public forward_iterator_i<T> {
     public:
         virtual void prev() = 0;

@@ -45,7 +45,7 @@ namespace mylib {
             // -----------
 
             void append(Value item);
-            template<class... Args> void append(Value item, Args... rest);
+            template<typename... Args> void append(Value item, Args... rest);
 
             xor_linked_list_iterator_t<Value> begin() const;
             
@@ -57,7 +57,7 @@ namespace mylib {
             
             xor_linked_list_iterator_t<Value> end() const;
             
-            template<class Iter> void extend(Iter it);
+            template<typename Iter> void extend(Iter it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
             void extend(Value* arr, uint32_t n);
@@ -68,8 +68,8 @@ namespace mylib {
 
             void insert(uint32_t index, Value item);
 
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
-            template<class U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const;
+            template<typename U> bool is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const;
             bool is_sorted(std::function<int32_t(Value, Value)> cmp) const;
             bool is_sorted() const;
 
@@ -88,10 +88,10 @@ namespace mylib {
 
             Value& operator[](uint32_t index) const;
 
-            template<class Iterator> xor_linked_list_t<Value>* operator+(Iterator rhs) const;
+            template<typename Iterator> xor_linked_list_t<Value>* operator+(Iterator rhs) const;
             xor_linked_list_t<Value>* operator+(const xor_linked_list_t<Value>& rhs) const;
 
-            template<class Iterator> xor_linked_list_t<Value>& operator+=(Iterator rhs);
+            template<typename Iterator> xor_linked_list_t<Value>& operator+=(Iterator rhs);
             xor_linked_list_t<Value>& operator+=(const xor_linked_list_t<Value>& rhs);
 
             xor_linked_list_t<Value>* operator*(uint32_t amount) const;
@@ -213,7 +213,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class... Args>
+    template<typename... Args>
     void xor_linked_list_t<Value>::append(Value item, Args... rest) {
         append(item);
         append(rest...);
@@ -262,7 +262,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iter>
+    template<typename Iter>
     void xor_linked_list_t<Value>::extend(Iter it) {
         for(Value item : it) {
             append(item);
@@ -350,7 +350,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool xor_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) const {
         if(_count <= 1) {
             return true;
@@ -374,7 +374,7 @@ namespace mylib {
     }
     
     template<typename Value>
-    template<class U>
+    template<typename U>
     bool xor_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
@@ -487,7 +487,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iterator>
+    template<typename Iterator>
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::operator+(Iterator rhs) const {
         xor_linked_list_t<Value>* result = new xor_linked_list_t<Value>(*this);
         
@@ -510,7 +510,7 @@ namespace mylib {
     }
 
     template<typename Value>
-    template<class Iterator>
+    template<typename Iterator>
     xor_linked_list_t<Value>& xor_linked_list_t<Value>::operator+=(Iterator rhs) {
         operator=(operator+(rhs));
     }

@@ -3,19 +3,19 @@
 
 #pragma once
 
-template<class T>
+template<typename T>
 int default_compare(T x, T y) {
 	return x - y;
 }
 
-template<class T>
+template<typename T>
 void swap(T* i, T* j) {
 	T t = *i;
 	*i = *j;
 	*j = t;
 }
 
-template<class T>
+template<typename T>
 T* sub_array(T* A, unsigned int l, unsigned int r) {
 	unsigned int n = r - l + 1;
 	T* result = new T[n];
@@ -32,7 +32,7 @@ T* sub_array(T* A, unsigned int l, unsigned int r) {
 /*
  * bubble_sort
  */
-template<class T>
+template<typename T>
 void bubble_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	bool flag = true;
 	unsigned i, j;
@@ -54,7 +54,7 @@ void bubble_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = def
 /*
  * selection_sort
  */
-template<class T>
+template<typename T>
 void selection_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	unsigned int i, j;
 	unsigned int min;
@@ -75,7 +75,7 @@ void selection_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = 
 /*
  * insertion_sort
  */
-template<class T>
+template<typename T>
 void insertion_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	unsigned int i, j;
 
@@ -93,7 +93,7 @@ void insertion_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = 
  * quick_sort
  * two-way partitioning
  */
-template<class T>
+template<typename T>
 unsigned int partition(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	/* two-way partitioning (USED HERE): https://www.youtube.com/watch?v=MZaf_9IZCrc */
 	/* three-way partitioning: https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/ */
@@ -116,7 +116,7 @@ unsigned int partition(T* A, unsigned int l, unsigned int r, int(*compare)(T, T)
 	return i;
 }
 
-template<class T>
+template<typename T>
 void quick_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	if (l < r) {
 		unsigned int pivot = partition(A, l, r, compare);
@@ -128,7 +128,7 @@ void quick_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = defa
 /*
  * heap_sort
  */
-template<class T>
+template<typename T>
 void max_heapify(T* A, unsigned int i, unsigned int n, int(*compare)(T, T) = default_compare) {
 	unsigned int l = 2 * i + 1;
 	unsigned int r = l + 1;
@@ -155,7 +155,7 @@ void max_heapify(T* A, unsigned int i, unsigned int n, int(*compare)(T, T) = def
 	}
 }
 
-template<class T>
+template<typename T>
 void build_max_heap(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	if (l == r) return;
 
@@ -175,7 +175,7 @@ void build_max_heap(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = 
 	}
 }
 
-template<class T>
+template<typename T>
 void heap_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	/* calculate length */
 	unsigned int n = r - l + 1;
@@ -193,7 +193,7 @@ void heap_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = defau
 /*
  * merge_sort
  */
-template<class T>
+template<typename T>
 T* merge(T* A, T* B, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	T* result = new T[l + r];
 
@@ -223,7 +223,7 @@ T* merge(T* A, T* B, unsigned int l, unsigned int r, int(*compare)(T, T) = defau
 	return result;
 }
 
-template<class T>
+template<typename T>
 T* merge_sort(T* A, unsigned int l, unsigned int r, int(*compare)(T, T) = default_compare) {
 	unsigned int n = r - l + 1;
 

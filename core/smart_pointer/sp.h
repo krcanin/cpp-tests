@@ -2,7 +2,7 @@
 #define SP_H
 
 namespace mylib {
-    template<class PointerType>
+    template<typename PointerType>
     class sp {
         private:
             PointerType* ptr;
@@ -20,20 +20,20 @@ namespace mylib {
             PointerType* operator->();
     };
 
-    template<class PointerType>
+    template<typename PointerType>
     sp<PointerType>::sp(PointerType* p) {
         ptr = p;
         rc = new int(1);
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     sp<PointerType>::sp(const sp<PointerType>& rhs) {
         ptr = rhs.ptr;
         rc = rhs.rc;
         *rc = *rc + 1;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     sp<PointerType>::sp(sp<PointerType>&& rhs) {
         ptr = rhs.ptr;
         rhs.ptr = nullptr;
@@ -41,7 +41,7 @@ namespace mylib {
         rc = rhs.rc;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     sp<PointerType>::~sp() {
         *rc = *rc - 1;
 
@@ -51,17 +51,17 @@ namespace mylib {
         }
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType* sp<PointerType>::get() {
         return ptr;
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType& sp<PointerType>::operator*() {
         return *(operator->());
     }
 
-    template<class PointerType>
+    template<typename PointerType>
     PointerType* sp<PointerType>::operator->() {
         return ptr;
     }
