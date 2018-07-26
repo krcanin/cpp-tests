@@ -8,22 +8,38 @@ namespace mylib {
             PointerType* ptr;
             int* rc;
         public:
+            sp();
             sp(PointerType* p);
-            sp(const sp& rhs);
-            sp(sp&& rhs);
+            sp(const sp<PointerType>& rhs);
+            sp(sp<PointerType>&& rhs);
 
             ~sp();
 
-            PointerType* get();
+            operator PointerType*();
 
             PointerType& operator*();
             PointerType* operator->();
+
+            sp<PointerType>& operator=(PointerType* rhs);
+            sp<PointerType>& operator=(const sp<PointerType>& rhs);
+            sp<PointerType>& operator=(sp<PointerType>&& rhs);
     };
+
+    template<typename PointerType>
+    sp<PointerType>::sp() {
+        ptr = nullptr;
+        rc = nullptr;
+    }
 
     template<typename PointerType>
     sp<PointerType>::sp(PointerType* p) {
         ptr = p;
-        rc = new int(1);
+
+        if(p) {
+            rc = new int(1);
+        } else {
+            rc = nullptr;
+        }
     }
 
     template<typename PointerType>
@@ -39,20 +55,23 @@ namespace mylib {
         rhs.ptr = nullptr;
 
         rc = rhs.rc;
+        rhs.rc = nullptr;
     }
 
     template<typename PointerType>
     sp<PointerType>::~sp() {
-        *rc = *rc - 1;
+        if(rc) {
+            *rc = *rc - 1;
 
-        if(*rc == 0) {
-            delete rc;
-            delete ptr;
+            if(*rc == 0) {
+                delete rc;
+                delete ptr;
+            }
         }
     }
 
     template<typename PointerType>
-    PointerType* sp<PointerType>::get() {
+    sp<PointerType>::operator PointerType*() {
         return ptr;
     }
 
@@ -64,6 +83,39 @@ namespace mylib {
     template<typename PointerType>
     PointerType* sp<PointerType>::operator->() {
         return ptr;
+    }
+
+    template<typename PointerType>
+    sp<PointerType>& sp<PointerType>::operator=(PointerType* rhs) {
+        this->~sp();
+
+        ptr = rhs;
+
+        if(rhs) {
+            rc = new int(1);
+        } else {
+            rc = nullptr;
+        }
+    }
+
+    template<typename PointerType>
+    sp<PointerType>& sp<PointerType>::operator=(const sp<PointerType>& rhs) {
+        this->~sp();
+
+        ptr = rhs.ptr;
+        rc = rhs.rc;
+        *rc = *rc + 1;
+    }
+
+    template<typename PointerType>
+    sp<PointerType>& sp<PointerType>::operator=(sp<PointerType>&& rhs) {
+        this->~sp();
+
+        ptr = rhs.ptr;
+        rhs.ptr = nullptr;
+
+        rc = rhs.rc;
+        rhs.rc = nullptr;
     }
 }
 
