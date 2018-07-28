@@ -32,7 +32,7 @@ namespace mylib {
     }
 
     template<typename PointerType>
-    wp<PointerType>::wp(PointerType* p) {
+    wp<PointerType>::wp(const sp<PointerType>& p) {
         ptr = p;
     }
 
@@ -66,7 +66,7 @@ namespace mylib {
     }
 
     template<typename PointerType>
-    wp<PointerType>& wp<PointerType>::operator=(PointerType* rhs) {
+    wp<PointerType>& wp<PointerType>::operator=(const sp<PointerType>& rhs) {
         this->~wp();
 
         if(rhs) {
