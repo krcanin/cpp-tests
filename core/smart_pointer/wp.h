@@ -1,6 +1,8 @@
 #ifndef WP_H
 #define WP_H
 
+#include "sp.h"
+
 namespace mylib {
     template<typename PointerType>
     class wp {
@@ -8,9 +10,9 @@ namespace mylib {
             PointerType* ptr;
         public:
             wp();
-            wp(PointerType* p);
-            wp(const wp& rhs);
-            wp(wp&& rhs);
+            wp(const sp<PointerType>& p);
+            wp(const wp<PointerType>& rhs);
+            wp(wp<PointerType>&& rhs);
 
             ~wp();
 
@@ -19,7 +21,7 @@ namespace mylib {
             PointerType& operator*();
             PointerType* operator->();
 
-            wp<PointerType>& operator=(PointerType* rhs);
+            wp<PointerType>& operator=(const sp<PointerType>& rhs);
             wp<PointerType>& operator=(const wp<PointerType>& rhs);
             wp<PointerType>& operator=(wp<PointerType>&& rhs);
     };
