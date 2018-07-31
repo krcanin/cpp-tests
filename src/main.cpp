@@ -4,21 +4,10 @@
 #include "../core/smart_pointer/sp.h"
 
 int main(int argc, char** argv) {
-    mylib::jstr js;
+    mylib::jstr str1 = " asdf";
+    mylib::jstr str2 = str1.ltrim();
 
-    js = "a";
-    std::cout << js << std::endl;
-
-    js += "c";
-    std::cout << js << std::endl;
-
-    js = js + "b";
-    std::cout << js << std::endl;
-
-    js *= 4;
-    std::cout << js << std::endl;
-
-    std::cout << js.length << std::endl;
+    std::cout << str1 << "\n" << str2;
 
     return 0;
 }
