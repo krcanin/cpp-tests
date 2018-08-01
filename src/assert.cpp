@@ -4,4 +4,8 @@ namespace mylib {
             throw err;
         }
     }
+
+    void assert(bool b) {
+        assert(b, "Unspecified error");
+    }
 }
