@@ -4,10 +4,10 @@
 #include "../core/smart_pointer/sp.h"
 
 int main(int argc, char** argv) {
-    mylib::jstr str1 = " asdf";
-    mylib::jstr str2 = str1.ltrim();
+    mylib::jstr str1 = "abc";
+    mylib::jstr str2 = "def";
 
-    std::cout << str1 << "\n" << str2;
+    std::cout << mylib::jstr(str1.contains("a")) << "\n";
 
     return 0;
 }

@@ -1,7 +1,4 @@
-#include "../core/java_string/java_string.h"
-
-#include <math.h>
-#include <assert.h>
+#include "../../core/java_string/java_string.h"
 
 template<typename T>
 int32_t digit_length(T value) {
@@ -57,7 +54,18 @@ namespace mylib {
         n = strlen(str);
         s = new char[n + 1];
 
-        for(int32_t i = 0; i < n + 1; i += 1) {
+        for(int32_t i = 0; i < n; i += 1) {
+            s[i] = str[i];
+        }
+
+        s[n] = '\0';
+    }
+
+    jstr::jstr(const char* str, int32_t length) {
+        n = length;
+        s = new char[n + 1];
+
+        for(int32_t i = 0; i < n; i += 1) {
             s[i] = str[i];
         }
 
@@ -65,8 +73,8 @@ namespace mylib {
     }
 
     jstr::jstr(const char* str, int32_t offset, int32_t count) {
-        assert(offset < 0, "Negative offset-index disallowed");
-        assert(count < 0, "Negative count-value disallowed");
+        if(offset < 0) throw "Negative offset-index disallowed";
+        if(count < 0) throw "Negative count-value disallowed";
 
         n = count;
 
@@ -105,8 +113,7 @@ namespace mylib {
             int32_t i = n - 1;
 
             while(value != 0) {
-                s[i] = abs(value % 10) + 0x30;
-                i -= 1;
+                s[i--] = abs(value % 10) + 0x30;
                 value = value / 10;
             }
         }
@@ -222,14 +229,14 @@ namespace mylib {
     }
 
     char jstr::char_at(int32_t index) const {
-        assert(index < 0, "Negative index disallowed");
+        if(index < 0) throw "Negative index disallowed";
         return s[index];
     }
 
     int32_t jstr::compare_to(jstr& other) const {
         for(int32_t i = 0, j = std::min(n, other.n); i < j; i += 1) {
-            if(s[i] != other[i]) {
-                return s[i] - other[i];
+            if(s[i] != other.char_at(i)) {
+                return s[i] - other.char_at(i);
             }
         }
 
@@ -248,7 +255,20 @@ namespace mylib {
     }
 
     jstr jstr::concat(jstr& other) const {
-        return *this + other;
+        int32_t result_n = n + other.n;
+        char* result_str = new char[result_n + 1];
+
+        for(int32_t i = 0; i < n; i += 1) {
+            result_str[i] = s[i];
+        }
+
+        for(int32_t i = 0; i < other.n; i += 1) {
+            result_str[n + i] = other.char_at(i);
+        }
+
+        result_str[result_n] = '\0';
+
+        return jstr(result_str, result_n);
     }
 
     bool jstr::contains(jstr& other) const {
@@ -267,7 +287,7 @@ namespace mylib {
             int32_t j = 0;
 
             while(j < min_n) {
-                if(s[i + j] != other[j]) {
+                if(s[i + j] != other.char_at(j)) {
                     success = false;
                     break;
                 }
@@ -293,7 +313,7 @@ namespace mylib {
         int32_t end = n - other.n;
 
         while(i_this >= end) {
-            if(s[i_this] != other[i_other]) {
+            if(s[i_this] != other.char_at(i_other)) {
                 return false;
             }
 
@@ -309,7 +329,7 @@ namespace mylib {
     }
 
     int32_t jstr::index_of(char c, int32_t from) const {
-        assert(from < 0, "Negative from-index disallowed");
+        if(from < 0) throw "Negative from-index disallowed";
 
         for(int32_t i = from; i < n; i += 1) {
             if(s[i] == c) {
@@ -325,12 +345,13 @@ namespace mylib {
     }
 
     int32_t jstr::index_of(jstr& other, int32_t from) const {
-        assert(from < 0, "Negative from-index disallowed");
+        if(from < 0) throw "Negative from-index disallowed";
 
         if(n < other.n) {
             return -1;
         }
 
+        int32_t result = -1;
         int32_t min_n = std::min(n, other.n);
 
         for(int32_t i = from; i < n; i += 1) {
@@ -342,7 +363,7 @@ namespace mylib {
             int32_t j = 0;
 
             while(j < min_n) {
-                if(s[i + j] != other[j]) {
+                if(s[i + j] != other.char_at(j)) {
                     success = false;
                     break;
                 }
@@ -351,11 +372,11 @@ namespace mylib {
             }
 
             if(success) {
-                return true;
+                result = i;
             }
         }
 
-        return false;
+        return result;
     }
 
     int32_t jstr::index_of(jstr& other) const {
@@ -366,26 +387,84 @@ namespace mylib {
         return n == 0;
     }
 
-    int jstr::last_index_of(char c, int32_t from) const {
-        assert(from < 0, "Negative from-index disallowed");
+    int32_t jstr::last_index_of(char c, int32_t from) const {
+        if(from < 0) throw "Negative from-index disallowed";
 
+        int32_t result = -1;
+
+        for(int32_t i = from; i < n; i += 1) {
+            if(s[i] == c) {
+                result = i;
+            }
+        }
+
+        return result;
     }
 
-    int jstr::last_index_of(char c) const {
+    int32_t jstr::last_index_of(char c) const {
         return last_index_of(c, n - 1);
     }
 
-    int jstr::last_index_of(jstr& other, int32_t from) const {
-        assert(from < 0, "Negative from-index disallowed");
+    int32_t jstr::last_index_of(jstr& other, int32_t from) const {
+        if(from < 0) throw "Negative from-index disallowed";
 
+        if(n < other.n) {
+            return -1;
+        }
+
+        int32_t result = -1;
+        int32_t min_n = std::min(n, other.n);
+
+        for(int32_t i = from; i < n; i += 1) {
+            if((i + other.n) > n) {
+                return false;
+            }
+
+            bool success = true;
+            int32_t j = 0;
+
+            while(j < min_n) {
+                if(s[i + j] != other.char_at(j)) {
+                    success = false;
+                    break;
+                }
+
+                j += 1;
+            }
+
+            if(success) {
+                result = i;
+            }
+        }
+
+        return result;
     }
 
-    int jstr::last_index_of(jstr& other) const {
+    int32_t jstr::last_index_of(jstr& other) const {
         return last_index_of(other, n - 1);
+    }
+
+    int32_t jstr::length() const {
+        return n;
     }
 
     bool jstr::matches(jstr& regex) const {
 
+    }
+
+    jstr jstr::repeat(int32_t amount) const {
+        if(amount < 0) throw "Negative amount disallowed";
+
+        int32_t result_n = n * amount;
+        char* result_str = new char[result_n + 1];
+
+        for(int32_t j = 0; j < amount; j += 1) {
+            for(int32_t i = 0; i < n; i += 1) {
+                result_str[j * n + i] = s[i];
+            }
+        }
+
+        return jstr(result_str, result_n);
     }
 
     jstr jstr::replace(char old_c, char new_c) const {
@@ -401,11 +480,11 @@ namespace mylib {
     }
 
     jstr* jstr::split(jstr& regex) const {
-        return split(regex, UINT32_MAX);
+        return split(regex, INT32_MAX);
     }
 
     jstr* jstr::split(jstr& regex, int32_t limit) const {
-        assert(limit < 0, "Negative limit disallowed");
+        if(limit < 0) throw "Negative limit disallowed";
 
     }
 
@@ -414,7 +493,7 @@ namespace mylib {
     }
 
     bool jstr::starts_with(jstr& prefix, int32_t offset) const {
-        assert(offset < 0, "Negative offset disallowed");
+        if(offset < 0) throw "Negative offset disallowed";
 
     }
 
@@ -423,8 +502,8 @@ namespace mylib {
     }
 
     jstr jstr::substring(int32_t start, int32_t end) const {
-        assert(start < 0, "Negative start-index disallowed");
-        assert(end < 0, "Negative end-index disallowed");
+        if(start < 0) throw "Negative start-index disallowed";
+        if(end < 0) throw "Negative end-index disallowed";
 
     }
 
@@ -457,7 +536,13 @@ namespace mylib {
     }
 
     jstr jstr::rtrim() const {
+        int32_t i = n - 1;
 
+        while(i >= 0 && isspace(s[i])) {
+            i -= 1;
+        }
+
+        return jstr(s, 0, i + 1);
     }
 
     jstr jstr::trim() const {
@@ -504,55 +589,6 @@ namespace mylib {
         s[n] = '\0';
 
         return *this;
-    }
-
-    char& jstr::operator[](int32_t i) const {
-        assert(i < 0, "Negative index disallowed");
-        return s[i];
-    }
-
-    jstr jstr::operator+(const jstr& rhs) const {
-        jstr result;
-        result.~jstr();
-
-        result.n = n + rhs.n;
-        result.s = new char[result.n + 1];
-
-        for(int32_t i = 0; i < n; i += 1) {
-            result.s[i] = operator[](i); // (*this)[i]
-        }
-
-        for(int32_t i = 0; i < rhs.n; i += 1) {
-            result.s[n + i] = rhs[i];
-        }
-
-        return result;
-    }
-
-    jstr& jstr::operator+=(const jstr& rhs) {
-        return operator=(operator+(rhs));
-    }
-
-    jstr jstr::operator*(int32_t amount) const {
-        assert(amount < 0, "Negative amouint disallowed");
-
-        jstr result;
-        result.~jstr();
-
-        result.n = n * amount;
-        result.s = new char[result.n + 1];
-
-        for(int32_t j = 0; j < amount; j += 1) {
-            for(int32_t i = 0; i < n; i += 1) {
-                result.s[j * n + i] = operator[](i); // (*this)[i]
-            }
-        }
-
-        return result;
-    }
-
-    jstr& jstr::operator*=(int32_t amount) {
-        return operator=(operator*(amount));
     }
 }
 

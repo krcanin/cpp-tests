@@ -11,13 +11,12 @@ namespace mylib {
             char* s;
             int32_t n;
         public:
-            const int32_t& length = n;
-
             jstr();
             jstr(const jstr& rhs);
             jstr(jstr&& rhs);
             jstr(char c);
             jstr(const char* str);
+            jstr(const char* str, int32_t length);
             jstr(const char* str, int32_t offset, int32_t count);
             jstr(bool b);
             jstr(int16_t value);
@@ -36,8 +35,10 @@ namespace mylib {
             int32_t compare_to_ignore_case(jstr& other) const;
 
             jstr concat(jstr& other) const;
+            jstr concat(jstr&& other) const { return concat(static_cast<jstr&>(other)); }
 
             bool contains(jstr& other) const;
+            bool contains(jstr&& other) const { return contains(static_cast<jstr&>(other)); }
 
             bool ends_with(jstr& other) const;
 
@@ -50,12 +51,16 @@ namespace mylib {
 
             bool is_empty();
 
-            int last_index_of(char c, int32_t from) const;
-            int last_index_of(char c) const;
-            int last_index_of(jstr& other, int32_t from) const;
-            int last_index_of(jstr& other) const;
+            int32_t last_index_of(char c, int32_t from) const;
+            int32_t last_index_of(char c) const;
+            int32_t last_index_of(jstr& other, int32_t from) const;
+            int32_t last_index_of(jstr& other) const;
+
+            int32_t length() const;
 
             bool matches(jstr& regex) const;
+
+            jstr repeat(int32_t amount) const;
 
             jstr replace(char old_c, char new_c) const;
             jstr replace_all(jstr& regex, jstr& replacement) const;
@@ -82,21 +87,13 @@ namespace mylib {
             jstr& operator=(const jstr&);
             jstr& operator=(jstr&& rhs);
             jstr& operator=(const char* str);
-
-            char& operator[](int32_t i) const;
-
-            jstr operator+(const jstr& rhs) const;
-            jstr& operator+=(const jstr& rhs);
-
-            jstr operator*(int32_t amount) const;
-            jstr& operator*=(int32_t amount);
     };
 }
 
 namespace std {
     inline ostream& operator<<(ostream& os, const mylib::jstr& rhs) {
-        for(int32_t i = 0; i < rhs.length; i += 1) {
-            os << rhs[i];
+        for(int32_t i = 0; i < rhs.length(); i += 1) {
+            os << rhs.char_at(i);
         }
 
         return os;
