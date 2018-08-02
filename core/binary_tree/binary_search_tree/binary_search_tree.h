@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <stdexcept>
 
 #include "binary_search_tree_node.h"
 #include "binary_search_tree_iterator.h"
@@ -132,7 +133,7 @@ namespace mylib {
             } else if (cmp_r > 0) {
                 node->right = insert(node->right, key, value);
             } else {
-                throw "Key already exists";
+                throw std::runtime_error("Key already exists");
             }
 
             return node;
@@ -335,7 +336,7 @@ namespace mylib {
         if(node) {
             return node->value;
         } else {
-            throw "Key not found";
+            throw std::runtime_error("Key not found");
         }
     }
 
@@ -348,7 +349,7 @@ namespace mylib {
     template<typename Key, typename Value>
     std::pair<Key, Value> binary_search_tree_t<Key, Value>::max() const {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         binary_search_tree_node_t<Key, Value>* node = max(_head);
@@ -358,7 +359,7 @@ namespace mylib {
     template<typename Key, typename Value>
     std::pair<Key, Value> binary_search_tree_t<Key, Value>::min() const {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         binary_search_tree_node_t<Key, Value>* node = min(_head);
@@ -368,7 +369,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove(Key key) {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove(_head, key);
@@ -378,7 +379,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove_max() {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove_max(_head);
@@ -388,7 +389,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void binary_search_tree_t<Key, Value>::remove_min() {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove_min(_head);
@@ -413,7 +414,7 @@ namespace mylib {
         if(node) {
             node->value = value;
         } else {
-            throw "Key not found";
+            throw std::runtime_error("Key not found");
         }
     }
 }

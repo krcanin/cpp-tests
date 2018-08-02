@@ -1,6 +1,8 @@
 #ifndef BINARY_HEAP_H
 #define BINARY_HEAP_H
 
+#include <stdexcept>
+
 #include "binary_heap_node.h"
 #include "../../list/list.h"
 
@@ -189,7 +191,7 @@ namespace mylib {
     template<typename Key, typename Value>
     std::pair<Key, Value> binary_heap_t<Key, Value>::peek() const {
         if(_count == 0) {
-            throw "Heap is empty";
+            throw std::runtime_error("Heap is empty");
         }
 
         return std::make_pair(_data[0]->key, _data[0]->value);

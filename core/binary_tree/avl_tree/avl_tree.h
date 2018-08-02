@@ -1,6 +1,8 @@
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 
+#include <stdexcept>
+
 #include "avl_tree_node.h"
 #include "avl_tree_iterator.h"
 #include "avl_tree_reverse_iterator.h"
@@ -157,7 +159,7 @@ namespace mylib {
             } else if (cmp_r > 0) {
                 node->right = insert(node->right, key, value);
             } else {
-                throw "Key already exists";
+                throw std::runtime_error("Key already exists");
             }
 
             node->height = std::max(get_height(node->left), get_height(node->right)) + 1;
@@ -446,7 +448,7 @@ namespace mylib {
         if(node) {
             return node->value;
         } else {
-            throw "Key not found";
+            throw std::runtime_error("Key not found");
         }
     }
 
@@ -459,7 +461,7 @@ namespace mylib {
     template<typename Key, typename Value>
     std::pair<Key, Value> avl_tree_t<Key, Value>::max() const {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         avl_tree_node_t<Key, Value>* node = max(_head);
@@ -469,7 +471,7 @@ namespace mylib {
     template<typename Key, typename Value>
     std::pair<Key, Value> avl_tree_t<Key, Value>::min() const {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         avl_tree_node_t<Key, Value>* node = min(_head);
@@ -479,7 +481,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove(Key key) {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove(_head, key);
@@ -489,7 +491,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove_max() {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove_max(_head);
@@ -499,7 +501,7 @@ namespace mylib {
     template<typename Key, typename Value>
     void avl_tree_t<Key, Value>::remove_min() {
         if(_count == 0) {
-            throw "Empty BST";
+            throw std::runtime_error("Empty BST");
         }
 
         _head = remove_min(_head);
@@ -524,7 +526,7 @@ namespace mylib {
         if(node) {
             node->value = value;
         } else {
-            throw "Key not found";
+            throw std::runtime_error("Key not found");
         }
     }
 }

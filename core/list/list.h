@@ -6,6 +6,7 @@
 #include <utility>
 #include <functional>
 #include <algorithm>
+#include <stdexcept>
 
 #include "list_iterator.h"
 #include "list_reverse_iterator.h"
@@ -219,7 +220,7 @@ namespace mylib {
             delete[] _elements;
             _elements = copy;
         } else {
-            throw "Invalid resize value";
+            throw std::runtime_error("Invalid resize value");
         }
     }
 
@@ -287,13 +288,13 @@ namespace mylib {
     template<typename Value>
     list_t<Value>::list_t(uint32_t initial_size) : _initial_size(initial_size) {
         if (initial_size == 0) {
-            throw "Initial size must be > 0";
+            throw std::runtime_error("Initial size must be > 0");
         }
 
         _elements = new Value*[initial_size]();
 
         if (_elements == nullptr) {
-            throw "Not enough memory left";
+            throw std::runtime_error("Not enough memory left");
         }
 
         _size = initial_size;
@@ -384,11 +385,11 @@ namespace mylib {
     template<typename Value>
     uint32_t list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         if (start >= _count) {
-            throw "Start index out of range";
+            throw std::runtime_error("Start index out of range");
         }
 
         if (end > _count) {
-            throw "End index out of range";
+            throw std::runtime_error("End index out of range");
         }
 
         for (uint32_t i = start; i < end; i += 1) {
@@ -397,7 +398,7 @@ namespace mylib {
             }
         }
 
-        throw "Item not found";
+        throw std::runtime_error("Item not found");
     }
 
     template<typename Value>
@@ -413,7 +414,7 @@ namespace mylib {
     template<typename Value>
     void list_t<Value>::insert(uint32_t index, Value item) {
         if (index > _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         }
 
         // use append(Value) to ensure that enough space is present
@@ -471,7 +472,7 @@ namespace mylib {
     template<typename Value>
     Value list_t<Value>::pop(uint32_t index) {
         if (index >= _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         }
 
         Value result = *_elements[index];
@@ -569,11 +570,11 @@ namespace mylib {
     template<typename Value>
     list_t<Value>* list_t<Value>::sublist(uint32_t left, uint32_t right, uint32_t step) const {
         if (right >= _count) {
-            throw "End index out of range";
+            throw std::runtime_error("End index out of range");
         }
 
         if (step == 0) {
-            throw "Invalid step size";
+            throw std::runtime_error("Invalid step size");
         }
 
         list_t<Value>* result = new list_t<Value>();

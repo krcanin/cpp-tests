@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <initializer_list>
 #include <functional>
+#include <stdexcept>
 
 #include "doubly_linked_list_node.h"
 #include "doubly_linked_list_iterator.h"
@@ -16,13 +17,13 @@ namespace mylib {
             doubly_linked_list_node_t<Value>* _head = nullptr;
             doubly_linked_list_node_t<Value>* _rear = nullptr;
             uint32_t _count = 0;
-            
+
             doubly_linked_list_node_t<Value>* get_node(uint32_t index) const;
-            
+
             template<typename U> doubly_linked_list_node_t<Value>* merge_sort(doubly_linked_list_node_t<Value>* head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
-            
+
             template<typename U> doubly_linked_list_node_t<Value>* merge(doubly_linked_list_node_t<Value>* first, doubly_linked_list_node_t<Value>* last, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse);
-            
+
             doubly_linked_list_node_t<Value>* split(doubly_linked_list_node_t<Value>* head) const;
         public:
             const uint32_t& length = _count;
@@ -48,15 +49,15 @@ namespace mylib {
             template<typename... Args> void append(Value item, Args... rest);
 
             doubly_linked_list_iterator_t<Value> begin() const;
-            
+
             void clear();
 
             doubly_linked_list_t<Value>* copy() const;
 
             uint32_t count(Value item) const;
-            
+
             doubly_linked_list_iterator_t<Value> end() const;
-            
+
             template<typename Iterator> void extend(Iterator it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
@@ -77,9 +78,9 @@ namespace mylib {
             Value pop();
 
             doubly_linked_list_reverse_iterator_t<Value> rbegin() const;
-            
+
             void remove(Value item);
-            
+
             doubly_linked_list_reverse_iterator_t<Value> rend() const;
 
             void reverse();
@@ -101,21 +102,21 @@ namespace mylib {
 
             doubly_linked_list_t<Value>* operator*(uint32_t amount) const;
     };
-    
+
     // -----------
     // PRIVATE
     // -----------
-    
+
     template<typename Value>
     doubly_linked_list_node_t<Value>* doubly_linked_list_t<Value>::get_node(uint32_t index) const {
         if(index >= _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         }
-        
+
         uint32_t median = _count / 2;
-        
+
         doubly_linked_list_node_t<Value>* current = nullptr;
-        
+
         if(index < median) {
             current = _head;
             uint32_t i = 0;
@@ -126,18 +127,18 @@ namespace mylib {
             }
         } else {
             current = _rear;
-            
+
             uint32_t i = _count - 1;
-            
+
             while(i > index) {
                 current = current->prev;
                 i -= 1;
             }
         }
-        
+
         return current;
     }
-    
+
     template<typename Value>
     template<typename U>
     doubly_linked_list_node_t<Value>* doubly_linked_list_t<Value>::merge_sort(doubly_linked_list_node_t<Value>* head, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
@@ -152,7 +153,7 @@ namespace mylib {
             return merge(head, second, cmp, key, reverse);
         }
     }
- 
+
     template<typename Value>
     template<typename U>
     doubly_linked_list_node_t<Value>* doubly_linked_list_t<Value>::merge(doubly_linked_list_node_t<Value>* first, doubly_linked_list_node_t<Value>* second, std::function<int32_t(U, U)> cmp, std::function<U(Value)> key, bool reverse) {
@@ -163,18 +164,18 @@ namespace mylib {
         } else {
             int cmp_r = cmp(key(first->value), key(second->value));
             cmp_r = reverse ? -cmp_r : cmp_r;
-            
+
             if(cmp_r < 0) {
                 first->next = merge(first->next, second, cmp, key, reverse);
                 first->next->prev = first;
                 first->prev = nullptr;
-                
+
                 return first;
             } else {
                 second->next = merge(first, second->next, cmp, key, reverse);
                 second->next->prev = second;
                 second->prev = nullptr;
-                
+
                 return second;
             }
         }
@@ -184,18 +185,18 @@ namespace mylib {
     doubly_linked_list_node_t<Value>* doubly_linked_list_t<Value>::split(doubly_linked_list_node_t<Value>* head) const {
         doubly_linked_list_node_t<Value>* fast = head;
         doubly_linked_list_node_t<Value>* slow = head;
-        
+
         while (fast->next && fast->next->next) {
             fast = fast->next->next;
             slow = slow->next;
         }
-        
+
         doubly_linked_list_node_t<Value>* result = slow->next;
         slow->next = nullptr;
-        
+
         return result;
     }
- 
+
     // -----------
     // MANDATORY
     // -----------
@@ -209,15 +210,15 @@ namespace mylib {
             append(item);
         }
     }
-    
+
     template<typename Value>
     doubly_linked_list_t<Value>::doubly_linked_list_t(doubly_linked_list_t<Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
-        
+
         _rear = rhs._rear;
         rhs._head = nullptr;
-        
+
         _count = rhs._count;
         rhs._count = 0;
     }
@@ -230,7 +231,7 @@ namespace mylib {
     template<typename Value>
     doubly_linked_list_t<Value>& doubly_linked_list_t<Value>::operator=(const doubly_linked_list_t<Value>& rhs) {
         clear();
-        
+
         for(Value item : rhs) {
             append(item);
         }
@@ -239,13 +240,13 @@ namespace mylib {
     template<typename Value>
     doubly_linked_list_t<Value>& doubly_linked_list_t<Value>::operator=(doubly_linked_list_t<Value>&& rhs) {
         clear();
-        
+
         _head = rhs._head;
         rhs._head = nullptr;
-        
+
         _rear = rhs._rear;
         rhs._head = nullptr;
-        
+
         _count = rhs._count;
         rhs._count = 0;
     }
@@ -257,14 +258,14 @@ namespace mylib {
     template<typename Value>
     void doubly_linked_list_t<Value>::append(Value item) {
         doubly_linked_list_node_t<Value>* node = new doubly_linked_list_node_t<Value>(item);
-        
+
         if(_count > 0) {
             _rear->next = node;
             _rear = node;
         } else {
             _head = _rear = node;
         }
-        
+
         _count += 1;
     }
 
@@ -274,24 +275,24 @@ namespace mylib {
         append(item);
         append(rest...);
     }
-    
+
     template<typename Value>
     doubly_linked_list_iterator_t<Value> doubly_linked_list_t<Value>::begin() const {
         return doubly_linked_list_iterator_t<Value>(_head);
     }
-            
+
     template<typename Value>
     void doubly_linked_list_t<Value>::clear() {
         doubly_linked_list_node_t<Value> *current, *next;
-        
+
         current = _head;
-        
+
         while(current) {
             next = current->next;
             delete current;
             current = next;
         }
-        
+
         _head = _rear = nullptr;
         _count = 0;
     }
@@ -304,13 +305,13 @@ namespace mylib {
     template<typename Value>
     uint32_t doubly_linked_list_t<Value>::count(Value item) const {
         uint32_t result = 0;
-        
+
         for(Value current : *this) {
             if(current == item) {
                 result += 1;
             }
         }
-        
+
         return result;
     }
 
@@ -326,21 +327,21 @@ namespace mylib {
             append(item);
         }
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::extend(std::initializer_list<Value> elements) {
         for(Value item : elements) {
             append(item);
         }
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::extend(Value* arr, uint32_t l, uint32_t r){
         for(uint32_t i = l; i < r; i += 1) {
             append(arr[i]);
         }
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::extend(Value* arr, uint32_t n){
         extend(arr, 0, n);
@@ -349,23 +350,23 @@ namespace mylib {
     template<typename Value>
     uint32_t doubly_linked_list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         uint32_t i = 0;
-        
+
         for(Value current : *this) {
             if(current == item) {
                 return i;
             }
-            
+
             i += 1;
         }
-        
-        throw "Item not found";
+
+        throw std::runtime_error("Item not found");
     }
-    
+
     template<typename Value>
     uint32_t doubly_linked_list_t<Value>::index(Value item, uint32_t start) const {
         return index(item, start, _count);
     }
-    
+
     template<typename Value>
     uint32_t doubly_linked_list_t<Value>::index(Value item) const {
         return index(item, 0, _count);
@@ -374,7 +375,7 @@ namespace mylib {
     template<typename Value>
     void doubly_linked_list_t<Value>::insert(uint32_t index, Value item) {
         doubly_linked_list_node_t<Value>* node = new doubly_linked_list_node_t<Value>(item);
-        
+
         if(index > 0) {
             doubly_linked_list_node_t<Value>* prev = get_node(index - 1);
 
@@ -384,11 +385,11 @@ namespace mylib {
             node->next = _head;
             _head = node;
         }
-        
+
         if(index == _count) {
             _rear = node;
         }
-        
+
         _count += 1;
     }
 
@@ -405,7 +406,7 @@ namespace mylib {
             while(it != end()) {
                 int cmp_r = cmp(key(*it), key(current));
                 cmp_r = reverse ? -cmp_r : cmp_r;
-                
+
                 if (cmp_r < 0) {
                     return false;
                 }
@@ -415,18 +416,18 @@ namespace mylib {
             }
         }
     }
-    
+
     template<typename Value>
     template<typename U>
     bool doubly_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
-    
+
     template<typename Value>
     bool doubly_linked_list_t<Value>::is_sorted(std::function<int32_t(Value, Value)> cmp) const {
         return is_sorted<Value>(cmp, [](Value x) { return x; }, false);
     }
-    
+
     template<typename Value>
     bool doubly_linked_list_t<Value>::is_sorted() const {
         return is_sorted<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
@@ -435,37 +436,37 @@ namespace mylib {
     template<typename Value>
     Value doubly_linked_list_t<Value>::pop(uint32_t index) {
         if(index >= _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         }
-        
+
         _count -= 1;
-        
+
         if(index == 0) {
             Value result = _head->value;
-            
+
             singly_linked_list_node_t<Value>* next = _head->next;
             delete _head;
             _head = next;
-            
+
             return result;
         } else {
             singly_linked_list_node_t<Value>* prev = get_node(index - 1);
             singly_linked_list_node_t<Value>* current = prev->next;
             singly_linked_list_node_t<Value>* next = current->next;
-            
+
             Value result = current->value;
-            
+
             delete current;
             prev->next = next;
-            
+
             if(index == (_count - 1)) {
                 _rear = prev;
             }
-            
+
             return result;
         }
     }
-    
+
     template<typename Value>
     Value doubly_linked_list_t<Value>::pop() {
         return pop(_count - 1);
@@ -485,23 +486,23 @@ namespace mylib {
     doubly_linked_list_reverse_iterator_t<Value> doubly_linked_list_t<Value>::rend() const {
         return doubly_linked_list_reverse_iterator_t<Value>(nullptr);
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::reverse() {
         if(_count > 1) {
             doubly_linked_list_node_t<Value> *prev, *current, *next;
-            
+
             prev = nullptr;
             current = _head;
             next = _head->next;
-            
+
             while(current) {
                 next = current->next;
                 current->next = prev;
                 prev = current;
                 current = next;
             }
-            
+
             std::swap(_head, _rear);
         }
     }
@@ -511,27 +512,27 @@ namespace mylib {
     void doubly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key, bool reverse) {
         // https://www.geeksforgeeks.org/merge-sort-for-doubly-linked-list/
         _head = merge_sort(_head, cmp, key, reverse);
-        
+
         _rear = _head;
-        
+
         if(_rear) {
             while(_rear->next) {
                 _rear = _rear->next;
             }
         }
     }
-    
+
     template<typename Value>
     template<typename U>
     void doubly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp, std::function<U(Value)> key) {
         sort(cmp, key, false);
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::sort(std::function<int32_t(Value, Value)> cmp) {
         sort<Value>(cmp, [](Value x) { return x; }, false);
     }
-    
+
     template<typename Value>
     void doubly_linked_list_t<Value>::sort() {
         sort<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
@@ -540,28 +541,28 @@ namespace mylib {
     template<typename Value>
     doubly_linked_list_t<Value>* doubly_linked_list_t<Value>::sublist(uint32_t left, uint32_t right, uint32_t step) const {
         if(left >= _count) {
-            throw "Invalid left index";
+            throw std::runtime_error("Invalid left index");
         }
-        
+
         if(right >= _count) {
-            throw "Invalid right index";
+            throw std::runtime_error("Invalid right index");
         }
-        
+
         doubly_linked_list_t<Value>* result = new doubly_linked_list_t<Value>();
-        
+
         doubly_linked_list_node_t<Value>* node = get_node(left);
         uint32_t i = left;
-        
+
         while(i < right) {
             result->append(node->value);
-            
+
             for(uint32_t j = 0; j < step; j += 1) {
                 node = node->next;
             }
-            
+
             i += 1;
         }
-        
+
         return result;
     }
 
@@ -575,22 +576,22 @@ namespace mylib {
     template<typename Iterator>
     doubly_linked_list_t<Value>* doubly_linked_list_t<Value>::operator+(Iterator rhs) const {
         doubly_linked_list_t<Value>* result = new doubly_linked_list_t<Value>(*this);
-        
+
         for(Value item : rhs) {
             result->append(item);
         }
-        
+
         return result;
     }
-    
+
     template<typename Value>
     doubly_linked_list_t<Value>* doubly_linked_list_t<Value>::operator+(const doubly_linked_list_t<Value>& rhs) const {
         doubly_linked_list_t<Value>* result = new doubly_linked_list_t<Value>(*this);
-        
+
         for(Value item : rhs) {
             result->append(item);
         }
-        
+
         return result;
     }
 
@@ -600,29 +601,29 @@ namespace mylib {
         for(Value item : rhs) {
             append(item);
         }
-        
+
         return *this;
     }
-    
+
     template<typename Value>
     doubly_linked_list_t<Value>& doubly_linked_list_t<Value>::operator+=(const doubly_linked_list_t<Value>& rhs) {
         for(Value item : rhs) {
             append(item);
         }
-        
+
         return *this;
     }
 
     template<typename Value>
     doubly_linked_list_t<Value>* doubly_linked_list_t<Value>::operator*(uint32_t amount) const {
         doubly_linked_list_t<Value>* result = new doubly_linked_list_t<Value>();
-        
+
         for(uint32_t i = 0; i < amount; i += 1) {
             for(Value item : *this) {
                 result->append(item);
             }
         }
-        
+
         return result;
     }
 }

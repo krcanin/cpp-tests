@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <initializer_list>
 #include <functional>
+#include <stdexcept>
 
 #include "xor_linked_list_node.h"
 #include "xor_linked_list_iterator.h"
@@ -16,13 +17,13 @@ namespace mylib {
             xor_linked_list_node_t<Value>* _head = nullptr;
             xor_linked_list_node_t<Value>* _rear = nullptr;
             uint32_t _count = 0;
-            
+
             xor_linked_list_node_t<Value>* get_node(uint32_t index, xor_linked_list_node_t<Value>** prev_ptr) const;
-            
+
             static xor_linked_list_node_t<Value>* calc_npx(xor_linked_list_node_t<Value>* prev, xor_linked_list_node_t<Value>* next) const;
-            
+
             static xor_linked_list_node_t<Value>* calc_prev(xor_linked_list_node_t<Value>* current, xor_linked_list_node_t<Value>* next) const;
-            
+
             static xor_linked_list_node_t<Value>* calc_next(xor_linked_list_node_t<Value>* current, xor_linked_list_node_t<Value>* prev) const;
         public:
             const uint32_t& length = _count;
@@ -48,15 +49,15 @@ namespace mylib {
             template<typename... Args> void append(Value item, Args... rest);
 
             xor_linked_list_iterator_t<Value> begin() const;
-            
+
             void clear();
 
             xor_linked_list_t<Value>* copy() const;
 
             uint32_t count(Value item) const;
-            
+
             xor_linked_list_iterator_t<Value> end() const;
-            
+
             template<typename Iter> void extend(Iter it);
             void extend(std::initializer_list<Value> elements);
             void extend(Value* arr, uint32_t l, uint32_t r);
@@ -75,11 +76,11 @@ namespace mylib {
 
             Value pop(uint32_t index);
             Value pop();
-            
+
             xor_linked_list_reverse_iterator_t<Value> rbegin() const;
-            
+
             void remove(Value item);
-            
+
             xor_linked_list_reverse_iterator_t<Value> rend() const;
 
             void reverse();
@@ -96,48 +97,48 @@ namespace mylib {
 
             xor_linked_list_t<Value>* operator*(uint32_t amount) const;
     };
-    
+
     // -----------
     // PRIVATE
     // -----------
-    
+
     template<typename Value>
     xor_linked_list_node_t<Value>* xor_linked_list_t<Value>::get_node(uint32_t index, xor_linked_list_node_t<Value>** prev_ptr) const {
         if(index >= _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         }
-        
+
         xor_linked_list_node_t<Value>* prev = nullptr;
         xor_linked_list_node_t<Value>* current = _head;
         xor_linked_list_node_t<Value>* temp;
         uint32_t i = 0;
-        
+
         while(i < index) {
             temp = current;
             current = calc_next(current, prev);
             prev = temp;
             i += 1;
         }
-        
+
         if(prev_ptr) *prev_ptr = prev;
         return current;
     }
-    
+
     template<typename Value>
     xor_linked_list_node_t<Value>* xor_linked_list_t<Value>::calc_npx(xor_linked_list_node_t<Value>* prev, xor_linked_list_node_t<Value>* next) const {
         return reinterpret_cast<xor_linked_list_node_t<Value>*>(reinterpret_cast<intptr_t>(prev) ^ reinterpret_cast<intptr_t>(next));
     }
-    
+
     template<typename Value>
     xor_linked_list_node_t<Value>* xor_linked_list_t<Value>::calc_prev(xor_linked_list_node_t<Value>* current, xor_linked_list_node_t<Value>* next) const {
         return reinterpret_cast<xor_linked_list_node_t<Value>*>(reinterpret_cast<intptr_t>(current->npx) ^ reinterpret_cast<intptr_t>(next));
     }
-    
+
     template<typename Value>
     xor_linked_list_node_t<Value>* xor_linked_list_t<Value>::calc_next(xor_linked_list_node_t<Value>* current, xor_linked_list_node_t<Value>* prev) const {
         return reinterpret_cast<xor_linked_list_node_t<Value>*>(reinterpret_cast<intptr_t>(current->npx) ^ reinterpret_cast<intptr_t>(prev));
     }
-    
+
     // -----------
     // MANDATORY
     // -----------
@@ -151,15 +152,15 @@ namespace mylib {
             append(item);
         }
     }
-    
+
     template<typename Value>
     xor_linked_list_t<Value>::xor_linked_list_t(xor_linked_list_t<Value>&& rhs) {
         _head = rhs._head;
         rhs._head = nullptr;
-        
+
         _rear = rhs._rear;
         rhs._rear = nullptr;
-        
+
         _count = rhs._count;
         rhs._count = 0;
     }
@@ -172,7 +173,7 @@ namespace mylib {
     template<typename Value>
     xor_linked_list_t<Value>& xor_linked_list_t<Value>::operator=(const xor_linked_list_t<Value>& rhs) {
         clear();
-        
+
         for(Value item : rhs) {
             append(item);
         }
@@ -181,13 +182,13 @@ namespace mylib {
     template<typename Value>
     xor_linked_list_t<Value>& xor_linked_list_t<Value>::operator=(xor_linked_list_t<Value>&& rhs) {
         clear();
-        
+
         _head = rhs._head;
         rhs._head = nullptr;
-        
+
         _rear = rhs._rear;
         rhs._rear = nullptr;
-        
+
         _count = rhs._count;
         rhs._count = 0;
     }
@@ -201,14 +202,14 @@ namespace mylib {
         xor_linked_list_node_t<Value>* node;
         node = new xor_linked_list_node_t<Value>(item);
         node->npx = _rear;
-        
+
         if(_count > 0) {
             _rear->npx = calc_npx(_rear->npx, node);
             _rear = node;
         } else {
             _head = _rear = node;
         }
-        
+
         _count += 1;
     }
 
@@ -218,18 +219,18 @@ namespace mylib {
         append(item);
         append(rest...);
     }
-    
+
     template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_t<Value>::begin() const {
         return xor_linked_list_iterator_t<Value>(_head, nullptr);
     }
-            
+
     template<typename Value>
     void xor_linked_list_t<Value>::clear() {
         xor_linked_list_node_t<Value>* prev = nullptr;
         xor_linked_list_node_t<Value>* current = _head;
         xor_linked_list_node_t<Value>* temp;
-        
+
         while(current) {
             temp = calc_next(current, prev);
             prev = current;
@@ -242,20 +243,20 @@ namespace mylib {
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::copy() const {
         return new xor_linked_list_node_t<Value>(*this);
     }
-    
+
     template<typename Value>
     uint32_t xor_linked_list_t<Value>::count(Value item) const {
         uint32_t result = 0;
-        
+
         for(Value current : *this) {
             if(current == item) {
                 result += 1;
             }
         }
-        
+
         return result;
     }
-    
+
     template<typename Value>
     xor_linked_list_iterator_t<Value> xor_linked_list_t<Value>::end() const {
         return xor_linked_list_iterator_t<Value>(nullptr, nullptr);
@@ -268,21 +269,21 @@ namespace mylib {
             append(item);
         }
     }
-    
+
     template<typename Value>
     void xor_linked_list_t<Value>::extend(std::initializer_list<Value> elements) {
         for(Value item : elements) {
             append(item);
         }
     }
-    
+
     template<typename Value>
     void xor_linked_list_t<Value>::extend(Value* arr, uint32_t l, uint32_t r){
         for(uint32_t i = l; i < r; i += 1) {
             append(arr[i]);
         }
     }
-    
+
     template<typename Value>
     void xor_linked_list_t<Value>::extend(Value* arr, uint32_t n){
         extend(arr, 0, n);
@@ -291,23 +292,23 @@ namespace mylib {
     template<typename Value>
     uint32_t xor_linked_list_t<Value>::index(Value item, uint32_t start, uint32_t end) const {
         uint32_t i = 0;
-        
+
         for(Value current : *this) {
             if(current == item) {
                 return i;
             }
-            
+
             i += 1;
         }
-        
-        throw "Item not found";
+
+        throw std::runtime_error("Item not found");
     }
-    
+
     template<typename Value>
     uint32_t xor_linked_list_t<Value>::index(Value item, uint32_t start) const {
         return index(item, start, _count);
     }
-    
+
     template<typename Value>
     uint32_t xor_linked_list_t<Value>::index(Value item) const {
         return index(item, 0, _count);
@@ -316,35 +317,35 @@ namespace mylib {
     template<typename Value>
     void xor_linked_list_t<Value>::insert(uint32_t index, Value item) {
         if(index > _count) {
-            throw "Index out of range";
+            throw std::runtime_error("Index out of range");
         } else if(index == _count) {
             append(item);
         } else if(index == 0) {
             xor_linked_list_node_t<Value>* node;
             node = new xor_linked_list_node_t<Value>(item);
             node->npx = _head;
-            
+
             if(_count > 0) {
                 _head->npx = calc_npx(_head->npx, node);
                 _head = node;
             } else {
                 _head = _rear = node;
             }
-            
+
             _count += 1;
         } else {
             xor_linked_list_node_t<Value>* node;
             node = new xor_linked_list_node_t<Value>(item);
             node->npx = _head;
-            
+
             xor_linked_list_node_t<Value>* prev = nullptr;
             xor_linked_list_node_t<Value>* current = get_node(index - 1, &prev);
             xor_linked_list_node_t<Value>* next = calc_next(current, prev);
-            
+
             current->npx = calc_npx(calc_prev(current, next), node);
             node->npx = calc_npx(current, next);
             next->npx = calc_npx(node, calc_next(next, current));
-            
+
             _count += 1;
         }
     }
@@ -362,7 +363,7 @@ namespace mylib {
             while(it != end()) {
                 int cmp_r = cmp(key(*it), key(current));
                 cmp_r = reverse ? -cmp_r : cmp_r;
-                
+
                 if (cmp_r < 0) {
                     return false;
                 }
@@ -372,18 +373,18 @@ namespace mylib {
             }
         }
     }
-    
+
     template<typename Value>
     template<typename U>
     bool xor_linked_list_t<Value>::is_sorted(std::function<int32_t(U, U)> cmp, std::function<U(Value)> key) const {
         return is_sorted(cmp, key, false);
     }
-    
+
     template<typename Value>
     bool xor_linked_list_t<Value>::is_sorted(std::function<int32_t(Value, Value)> cmp) const {
         return is_sorted<Value>(cmp, [](Value x) { return x; }, false);
     }
-    
+
     template<typename Value>
     bool xor_linked_list_t<Value>::is_sorted() const {
         return is_sorted<Value>([](Value x, Value y) { return x - y; }, [](Value x) { return x; }, false);
@@ -392,11 +393,11 @@ namespace mylib {
     template<typename Value>
     Value xor_linked_list_t<Value>::pop(uint32_t index) {
         if (index >= _count) {
-            throw "index out of range";
+            throw std::runtime_error("index out of range");
         }
-        
+
         xor_linked_list_node_t<Value> *A, *B, *C, *temp;
-        
+
         B = _head;
         A = nullptr;
 
@@ -406,7 +407,7 @@ namespace mylib {
             temp = B;
             B = calc_next(B, A);
             A = temp;
-            
+
             i += 1;
         }
 
@@ -416,7 +417,7 @@ namespace mylib {
             A->npx = calc_npx(calc_prev(A, B), C);
         if(C)
             C->npx = calc_npx(A, calc_next(C, B));
-        
+
         Value result = B->value;
         delete B;
 
@@ -426,30 +427,30 @@ namespace mylib {
             _rear = A;
 
         _count -= 1;
-        
+
         return result;
     }
-    
+
     template<typename Value>
     Value xor_linked_list_t<Value>::pop() {
         return pop(_count - 1);
     }
-    
+
     template<typename Value>
     xor_linked_list_reverse_iterator_t<Value> xor_linked_list_t<Value>::rbegin() const {
         return xor_linked_list_reverse_iterator_t<Value>(_rear, _rear->npx);
     }
-    
+
     template<typename Value>
     void xor_linked_list_t<Value>::remove(Value item) {
         pop(index(item));
     }
-    
+
     template<typename Value>
     xor_linked_list_reverse_iterator_t<Value> xor_linked_list_t<Value>::rend() const {
         return xor_linked_list_reverse_iterator_t<Value>(nullptr, nullptr);
     }
-    
+
     template<typename Value>
     void xor_linked_list_t<Value>::reverse() {
         std::swap(_head, _rear);
@@ -458,25 +459,25 @@ namespace mylib {
     template<typename Value>
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::sublist(uint32_t left, uint32_t right, uint32_t step) const {
         xor_linked_list_t<Value>* result = new xor_linked_list_t<Value>();
-        
+
         xor_linked_list_node_t<Value>* prev = nullptr;
         xor_linked_list_node_t<Value>* current = get_node(left, &prev);
         xor_linked_list_node_t<Value>* temp;
-        
+
         uint32_t i = left;
-        
+
         while(i < right) {
             result->append(current->value);
-            
+
             for(uint32_t j = 0; j < step; j += 1) {
                 temp = current;
                 current = calc_next(current, prev);
                 prev = temp;
             }
-            
+
             i += step;
         }
-        
+
         return result;
     }
 
@@ -490,22 +491,22 @@ namespace mylib {
     template<typename Iterator>
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::operator+(Iterator rhs) const {
         xor_linked_list_t<Value>* result = new xor_linked_list_t<Value>(*this);
-        
+
         for(Value item : rhs) {
             result->append(item);
         }
-        
+
         return result;
     }
-    
+
     template<typename Value>
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::operator+(const xor_linked_list_t<Value>& rhs) const {
         xor_linked_list_t<Value>* result = new xor_linked_list_t<Value>(*this);
-        
+
         for(Value item : rhs) {
             result->append(item);
         }
-        
+
         return result;
     }
 
@@ -514,7 +515,7 @@ namespace mylib {
     xor_linked_list_t<Value>& xor_linked_list_t<Value>::operator+=(Iterator rhs) {
         operator=(operator+(rhs));
     }
-    
+
     template<typename Value>
     xor_linked_list_t<Value>& xor_linked_list_t<Value>::operator+=(const xor_linked_list_t<Value>& rhs) {
         operator=(operator+(rhs));
@@ -523,13 +524,13 @@ namespace mylib {
     template<typename Value>
     xor_linked_list_t<Value>* xor_linked_list_t<Value>::operator*(uint32_t amount) const {
         xor_linked_list_t<Value>* result = xor_linked_list_t<Value>();
-        
+
         for(uint32_t i = 0; i < amount; i += 1) {
             for(Value item : *this) {
                 result->append(item);
             }
         }
-        
+
         return result;
     }
 }
