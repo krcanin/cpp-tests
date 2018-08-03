@@ -1,5 +1,7 @@
 #include "../../core/java_string/java_string.h"
 
+#include <algorithm>
+
 template<typename T>
 int32_t digit_length(T value) {
     if(value == 0) {
